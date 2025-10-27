@@ -1,7 +1,7 @@
 # ==============================================================================
 # Purpose:            S3 class to store preprocessed sequences for tokenization
 # Author:             Sophia Li
-# Date:               October 27, 2025
+# Date:               2025-10-27
 # Version:            1.0
 # Bugs and Issues:    N/A
 # ==============================================================================
@@ -9,7 +9,8 @@
 # =====| Class Definition |=====================================================
 
 bioBPE_preprocessed <- function(seqs,
-                                preproc_steps = character(0),
+                                preproc_steps = list(),
+                                annot_steps = list(),
                                 metadata = list()) {
   
   # Verify that the sequences provided are a Biostrings sequence set object
@@ -45,8 +46,9 @@ bioBPE_preprocessed <- function(seqs,
   return (structure(list(
       seqs = seqs,
       type = type, 
+      metadata = metadata,
       preproc_steps = preproc_steps,
-      metadata = metadata
+      annot_steps = NULL
     ), 
     class = "bioBPE_preprocessed"
   ))

@@ -1,7 +1,7 @@
 # ==============================================================================
 # Purpose:            Preprocesses biological sequences for tokenization
 # Author:             Sophia Li
-# Date:               October 27, 2025
+# Date:               2025-10-27
 # Version:            1.0
 # Bugs and Issues:    N/A
 # Notes:              Explicitly separated preprocessing by type to facilitate 
@@ -22,32 +22,36 @@ CANONICAL_AA  <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N",
 
 preprocess_seqs <- function(seqs) {
   
-  # Preprocess the sequences based on type, else raise an error if unsupported
-  if (inherits(seqs, "DNAStringSet")) {
-    processed_seqs, preproc_steps <- .BioTokenizeR_preprocess_DNA(seqs)
-    
-  } else if (inherits(seqs, "RNAStringSet")) {
-    processed_seqs, preproc_steps <- .BioTokenizeR_preprocess_RNA(seqs)
-    
-  } else if (inherits(seqs, "AAStringSet")) {
-    processed_seqs, preproc_steps <- .BioTokenizeR_preprocess_AA(seqs)
-    
-  } else {
-    stop(paste0(
-      "Unsupported sequence(s) type: must be a Biostrings::XStringSet ",
-      "(DNAStringSet, RNAStringSet, AAStringSet)."
-    ))
+  # Verify that the sequences provided are a Biostrings sequence set object
+  if (!inherits(seqs, "XStringSet")) {
+    stop(paste0("'seqs' must be a Biostrings::XStringSet (e.g., DNAStringSet, ",
+                "RNAStringSet, AAStringSet)."))
   }
   
+  # Verify that the sequences object is non-empty
+  if (length(seqs) == 0) {
+    stop("'seqs' cannot be empty.")
+  }
+  
+  # Preprocess the sequences based on type, else raise an error if unsupported
+  processed, preproc_steps <- switch(class(seqs),
+    "DNAStringSet" = .BioTokenizeR_preprocess_DNA(seqs),
+    "RNAStringSet" = .BioTokenizeR_preprocess_RNA(seqs),
+    "AAStringSet" = .BioTokenizeR_preprocess_AA(seqs),
+    stop(paste0("Unsupported sequence(s) type: must be a ",
+                "Biostrings::XStringSet (DNAStringSet, RNAStringSet, ",
+                "AAStringSet)."))
+  )
+  
   # Verify that valid sequences exist after preprocessing (and dropping empty)
-  if (width(seqs) == 0) {
+  if (length(seqs) == 0) {
     stop("No valid sequence(s) exist after preprocessing.")
   }
   
   # Initialize a preprocessed object compatible with downstream BPE tokenization
-  processed <- bioBPE_preprocessed(seqs = seqs, preproc_steps = preproc_steps)
+  bioBPE_seqs <- bioBPE_preprocessed(seqs = seqs, preproc_steps = preproc_steps)
   
-  return (processed)
+  return (bioBPE_seqs)
 }
 
 
