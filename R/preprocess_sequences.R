@@ -18,22 +18,19 @@ CANONICAL_RNA <- c("A", "C", "G", "U")
 CANONICAL_AA  <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N",
                    "P", "Q", "R", "S", "T", "V", "W", "Y")
 
-# =====| Preprocessing Functions |==============================================
+# =====| Preprocessing Wrapper |================================================
 
 preprocess_seqs <- function(seqs) {
   
   # Preprocess the sequences based on type, else raise an error if unsupported
   if (inherits(seqs, "DNAStringSet")) {
     processed_seqs, preproc_steps <- .BioTokenizeR_preprocess_DNA(seqs)
-    type <- "DNA"
     
   } else if (inherits(seqs, "RNAStringSet")) {
     processed_seqs, preproc_steps <- .BioTokenizeR_preprocess_RNA(seqs)
-    type <- "RNA"
     
   } else if (inherits(seqs, "AAStringSet")) {
     processed_seqs, preproc_steps <- .BioTokenizeR_preprocess_AA(seqs)
-    type <- "AA"
     
   } else {
     stop(paste0(
@@ -48,15 +45,13 @@ preprocess_seqs <- function(seqs) {
   }
   
   # Initialize a preprocessed object compatible with downstream BPE tokenization
-  processed <- bioBPE_preprocessed(
-    seqs = seqs, 
-    type = type, 
-    preproc_steps = preproc_steps
-  )
+  processed <- bioBPE_preprocessed(seqs = seqs, preproc_steps = preproc_steps)
   
   return (processed)
 }
 
+
+# =====| Preprocessing Helper Functions |=======================================
 
 .BioTokenizeR_preprocess_DNA <- function(seqs) {
   
