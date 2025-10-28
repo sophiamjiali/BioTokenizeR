@@ -55,7 +55,7 @@ bioBPE_preprocessed <- function(seqs,
 }
 
 
-# =====| Core Methods |=====================================================
+# =====| Core Methods |=========================================================
 
 print.bioBPE_preprocesed <- function(x, ...) {
   cat("<bioBPE_processed>\n")
