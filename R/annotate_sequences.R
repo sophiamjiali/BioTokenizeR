@@ -11,8 +11,11 @@
 
 # =====| Global Constants |=====================================================
 
-# Define the canonical amino acids that are hydrophobic
-HYDROPHOBIC_AA <- c("A", "V", "I", "L", "M", "F", "Y", "W")
+# Define canonical amino acid properties
+HYDROPHOBIC <- c("A", "V", "I", "L", "M", "F", "Y", "W")
+CHARGED_POS <- c("K", "R", "H")
+CHARGED_NEG <- c("D", "E")
+POLAR <- c("S", "T", "N", "Q")
 
 # =====| Annotation Wrapper |===================================================
 
@@ -44,14 +47,14 @@ annotate_sequences <- function(bioBPE_seqs) {
 }
 
 
-# =====| Annotation Helper Functions |==========================================
+# =====| Annotation Functions |=================================================
 
 .BioTokenizeR_annotate_DNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
   annot_steps <- c("length", "gc_content")
   
-  # Annotate the Biostrings::XStringSet object
+  # Annotate the Biostrings::XStringSet object for length and GC content
   mcols(seqs)$length <- width(seqs)
   mcols(seqs)$gc_content <- rowSums(Biostrings::letterFrequency(
     seqs, c('G', 'C'), as.prob = TRUE
@@ -84,18 +87,25 @@ annotate_sequences <- function(bioBPE_seqs) {
   # Annotate the Biostrings::XStringSet object
   mcols(seqs)$length <- width(seqs)
   
-  # Compute the hydrophobic fraction  
-  mcols(seqs)$hydrophobic_fraction <- rowSums(Biostrings::letterFrequency(
-    seqs, HYDROPHOBIC_AA, as.prob = TRUE
-  ))
-  
-  # Compute Composition entropy based on amino acide frequencies
-  aa_frequencies <- Biostrings::letterFrequency(
-    seqs, Biostrings::AA_STANDARD, as.prob = TRUE
+  # Compute amino acid frequencies for hydrophobic, charged, and polar fractions
+  aa_counts <- Biostrings::letterFrequency(seqs, Biostrings::AA_STANDARD, 
+                                           as.prob = TRUE)
+  mcols(seqs)$hydrophobic_fraction <- rowSums(
+    aa_counts[, HYDROPHOBIC, drop = FALSE]
   )
-  mcols(seqs)$composition_entropy <- apply(aa_freq, 1, function(p) {
+  mcols(seqs)$charged_fraction <- rowSums(
+    aa_counts[, c(CHARGED_POS, CHARGED_NEG), drop = FALSE]
+  )
+  mcols(seqs)$polar_fraction <- rowSums(
+    aa_counts[, POLAR, drop = FALSE]
+  )
+
+  # Compute Composition entropy based on amino acid frequencies
+  mcols(seqs)$composition_entropy <- apply(aa_counts, 1, function(p) {
     -sum(ifelse(p > 0, p * log2(p), 0))
   })
   
   return (seqs, annot_steps)
 }
+
+
