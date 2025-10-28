@@ -82,7 +82,8 @@ annotate_sequences <- function(bioBPE_seqs) {
 .BioTokenizeR_annotate_AA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
-  annot_steps <- c("length", "hydrophobic_fraction", "composition_entropy")
+  annot_steps <- c("length", "hydrophobic_fraction", "charged_fraction",
+                   "polar_fraction", "composition_entropy")
   
   # Annotate the Biostrings::XStringSet object
   mcols(seqs)$length <- width(seqs)

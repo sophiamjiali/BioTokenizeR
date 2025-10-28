@@ -37,7 +37,7 @@ preprocess_seqs <- function(seqs) {
   processed, preproc_steps <- switch(class(seqs),
     "DNAStringSet" = .BioTokenizeR_preprocess_DNA(seqs),
     "RNAStringSet" = .BioTokenizeR_preprocess_RNA(seqs),
-    "AAStringSet" = .BioTokenizeR_preprocess_AA(seqs),
+    "AAStringSet"  = .BioTokenizeR_preprocess_AA(seqs),
     stop(paste0("Unsupported sequence(s) type: must be a ",
                 "Biostrings::XStringSet (DNAStringSet, RNAStringSet, ",
                 "AAStringSet)."))
