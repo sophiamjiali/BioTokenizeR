@@ -49,7 +49,12 @@ preprocess_seqs <- function(seqs) {
   }
   
   # Initialize a preprocessed object compatible with downstream BPE tokenization
-  bioBPE_seqs <- bioBPE_preprocessed(seqs = seqs, preproc_steps = preproc_steps)
+  bioBPE_seqs <- 
+    
+    
+    
+    
+    bioBPE_preprocessed(seqs = seqs, preproc_steps = preproc_steps)
   
   return (bioBPE_seqs)
 }

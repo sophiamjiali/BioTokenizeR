@@ -19,7 +19,7 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
   # Perform the learned merges to generate tokens from the sequences
   tokens <- .BioTokenizeR_apply_bpe(seqs = bioBPE_seqs$seqs, vocab = vocab))
   
-  # Initialize a token object compatible with downstream analysis
+  return (vocab, tokens)
   
 }
 
