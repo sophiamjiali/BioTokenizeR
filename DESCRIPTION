@@ -1,0 +1,33 @@
+Package: BioTokenizeR
+Type: Package
+Title: Biology-aware Byte-pair Encoding (BPE) Tokenizer for biological sequences
+Version: 1.0.0
+Authors@R: person("Li", "Sophia",
+                  email = "sophiamjia.li@mail.utoronto.ca",
+                  role = c("aut", "cre"))
+Maintainer: Sophia Li <sophiamjia.li@mail.utoronto.ca>
+Description: 
+    BioTokenizeR is a tool to help users tokenize biological sequences (DNA, 
+    RNA, and protein) via biology-aware byte-pair encoding (BPE) 
+    (Sennrich et al., 2016), analyzing and visualizing the tokens produced. It 
+    aims to be the first R package to incorporate biological annotations into
+    its merge strategy, producing biologically-meaningful tokens. It improves
+    existing workflows by combining this novel tokenization with token analysis
+    and exploratory visualizations in a single R package, enabling researchers
+    to discover and analyze recurrent sequence patterns in a way not previously
+    supported in R.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 4.5.1)
+Imports:
+    ggplot2
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/Needs/website: https://cran.r-project.org
+RoxygenNote: 7.3.2
+URL: https://github.com/sophiamjiali/BioTokenizeR
+VignetteBuilder: knitr
