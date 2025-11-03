@@ -20,7 +20,7 @@ CANONICAL_AA  <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N",
 
 # =====| Preprocessing Wrapper |================================================
 
-preprocess_seqs <- function(seqs) {
+preprocess_sequences <- function(seqs) {
   
   # Verify that the sequences provided are a Biostrings sequence set object
   if (!inherits(seqs, "XStringSet")) {
