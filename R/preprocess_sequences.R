@@ -57,7 +57,7 @@ preprocess_seqs <- function(seqs) {
   bioBPE_seqs <- structure(list(
       seqs = processed$seqs,
       type = seq_type,
-      preproc_steps = processed$steps
+      preproc_steps = processed$steps,
       annot_steps = NULL),
     class = "bioBPE_preprocessed"
   )
