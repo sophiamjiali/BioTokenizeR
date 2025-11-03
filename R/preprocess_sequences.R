@@ -49,9 +49,17 @@ preprocess_seqs <- function(seqs) {
   }
   
   # Initialize a preprocessed object compatible with downstream BPE tokenization
-  bioBPE_seqs <- bioBPE_preprocessed(
-    seqs = processed$seqs, 
-    preproc_steps = processed$steps
+  seq_type <- switch(class(seqs),
+                     DNAStringSet = "DNA",
+                     RNAStringSet = "RNA",
+                     AAStringSet  = "AA")
+  
+  bioBPE_seqs <- structure(list(
+      seqs = processed$seqs,
+      type = seq_type,
+      preproc_steps = processed$steps
+      annot_steps = NULL),
+    class = "bioBPE_preprocessed"
   )
   
   return (bioBPE_seqs)
