@@ -32,7 +32,7 @@ annotate_sequences <- function(bioBPE_seqs) {
   }
   
   # Annotate the sequences based on type
-  annotated, annot_steps <- switch(type,
+  annotation <- switch(type,
     "DNA" = .BioTokenizeR_annotate_DNA(bioBPE_seqs$seqs),
     "RNA" = .BioTokenizeR_annotate_RNA(bioBPE_seqs$seqs),
     "AA" = .BioTokenizeR_annotate_AA(bioBPE_seqs$seqs),
@@ -40,8 +40,8 @@ annotate_sequences <- function(bioBPE_seqs) {
   )
   
   # Re-initialize the bioBPE_preprocessed objects with annotations and steps
-  bioBPE_seqs$seqs <- annotated
-  bioBPE_seqs$annot_steps <- annot_steps
+  bioBPE_seqs$seqs <- annotation$seqs
+  bioBPE_seqs$annot_steps <- annotation$steps
   
   return (bioBPE_seqs)
 }
@@ -52,7 +52,7 @@ annotate_sequences <- function(bioBPE_seqs) {
 .BioTokenizeR_annotate_DNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
-  annot_steps <- c("length", "gc_content")
+  steps <- c("length", "gc_content")
   
   # Annotate the Biostrings::XStringSet object for length and GC content
   mcols(seqs)$length <- width(seqs)
@@ -60,14 +60,14 @@ annotate_sequences <- function(bioBPE_seqs) {
     seqs, c('G', 'C'), as.prob = TRUE
   ))
   
-  return (seqs, annot_steps)
+  return (list(seqs = seqs, steps = steps))
 }
 
 
 .BioTokenizeR_annotate_RNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
-  annot_steps <- c("length", "gc_content")
+  steps <- c("length", "gc_content")
   
   # Annotate the Biostrings::XStringSet object
   mcols(seqs)$length <- width(seqs)
@@ -75,14 +75,14 @@ annotate_sequences <- function(bioBPE_seqs) {
     seqs, c('G', 'C'), as.prob = TRUE
   ))
   
-  return (seqs, annot_steps)
+  return (list(seqs = seqs, steps = steps))
 }
 
 
 .BioTokenizeR_annotate_AA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
-  annot_steps <- c("length", "hydrophobic_fraction", "charged_fraction",
+  steps <- c("length", "hydrophobic_fraction", "charged_fraction",
                    "polar_fraction", "composition_entropy")
   
   # Annotate the Biostrings::XStringSet object
@@ -106,7 +106,5 @@ annotate_sequences <- function(bioBPE_seqs) {
     -sum(ifelse(p > 0, p * log2(p), 0))
   })
   
-  return (seqs, annot_steps)
+  return (list(seqs = seqs, steps = steps))
 }
-
-

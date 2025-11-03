@@ -34,7 +34,7 @@ preprocess_seqs <- function(seqs) {
   }
   
   # Preprocess the sequences based on type, else raise an error if unsupported
-  processed, preproc_steps <- switch(class(seqs),
+  processed <- switch(class(seqs),
     "DNAStringSet" = .BioTokenizeR_preprocess_DNA(seqs),
     "RNAStringSet" = .BioTokenizeR_preprocess_RNA(seqs),
     "AAStringSet"  = .BioTokenizeR_preprocess_AA(seqs),
@@ -44,17 +44,15 @@ preprocess_seqs <- function(seqs) {
   )
   
   # Verify that valid sequences exist after preprocessing (and dropping empty)
-  if (length(seqs) == 0) {
+  if (length(processed$seqs) == 0) {
     stop("No valid sequence(s) exist after preprocessing.")
   }
   
   # Initialize a preprocessed object compatible with downstream BPE tokenization
-  bioBPE_seqs <- 
-    
-    
-    
-    
-    bioBPE_preprocessed(seqs = seqs, preproc_steps = preproc_steps)
+  bioBPE_seqs <- bioBPE_preprocessed(
+    seqs = processed$seqs, 
+    preproc_steps = processed$steps
+  )
   
   return (bioBPE_seqs)
 }
@@ -65,7 +63,7 @@ preprocess_seqs <- function(seqs) {
 .BioTokenizeR_preprocess_DNA <- function(seqs) {
   
   # Define the preprocessing steps applied as metadata
-  preproc_steps <- c("to_lower", "trim_N", "remove_ambiguous", "drop_empty")
+  steps <- c("to_lower", "trim_N", "remove_ambiguous", "drop_empty")
   
   # Convert all sequences to lower-case
   seqs <- Biostrings::DNAStringSet(tolower(as.character(seqs)))
@@ -84,13 +82,13 @@ preprocess_seqs <- function(seqs) {
   # Drop any empty sequences that may exist
   seqs <- seqs[width(seqs) > 0]
   
-  return (seqs, preproc_steps)
+  return (list(seqs = seqs, steps = steps))
 }
 
 .BioTokenizeR_preprocess_RNA <- function(seqs) {
   
   # Define the preprocessing steps applied as metadata
-  preproc_steps <- c("to_lower", "trim_N", "remove_ambiguous", "drop_empty")
+  steps <- c("to_lower", "trim_N", "remove_ambiguous", "drop_empty")
   
   # Convert all sequences to lower-case
   seqs <- Biostrings::RNAStringSet(tolower(as.character(seqs)))
@@ -109,13 +107,13 @@ preprocess_seqs <- function(seqs) {
   # Drop any empty sequences that may exist
   seqs <- seqs[width(seqs) > 0]
   
-  return (seqs, preproc_steps)
+  return (list(seqs = seqs, steps = steps))
 }
 
 .BioTokenizeR_preprocess_AA <- function(seqs) {
   
   # Define the preprocessing steps applied as metadata
-  preproc_steps <- c("to_lower", "remove_non_canonical", "drop_empty")
+  steps <- c("to_lower", "remove_non_canonical", "drop_empty")
   
   # Convert all sequences to lower-case
   seqs <- Biostrings::AAStringSet(tolower(as.character(seqs)))
@@ -127,5 +125,5 @@ preprocess_seqs <- function(seqs) {
   # Drop any empty sequences that may exist
   seqs <- seqs[width(seqs) > 0]
   
-  return (seqs, preproc_steps)
+  return (list(seqs = seqs, steps = steps))
 }

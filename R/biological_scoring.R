@@ -12,7 +12,14 @@
 # =====| Global Constants |=====================================================
 
 # Define weights of each annotation for computing bio-score
-BIO_SCORE_WEIGHTS # ..
+BIO_SCORE_WEIGHTS = list(
+  length               = 1,
+  gc_content           = 1,
+  hydrophobic_fraction = 1,
+  charged_fraction     = 1,
+  polar_fraction       = 1,
+  composition_entropy  = 1
+)
 
 # =====| Biological Score |=====================================================
 
@@ -33,7 +40,8 @@ BIO_SCORE_WEIGHTS # ..
   scores <- do.call(cbind, scores)
   
   # Apply annotation-weighting upon the computed scores
-  bio_score <- as.numeric(scores %*% BIO_SCORE_WEIGHTS)
+  weights <- unlist(BIO_SCORE_WEIGHTS)[colnames(scores)]
+  bio_score <- as.numeric(scores %*% weights) / sum(weights)
   
   return (bio_score)
 }
@@ -49,7 +57,7 @@ BIO_SCORE_WEIGHTS # ..
 }
 
 .BioTokenizeR_score_gc <- function(ann) {
-  return (.BioTokenizeR_normalize(ann$gc_content)
+  return (.BioTokenizeR_normalize(ann$gc_content))
 }
 
 .BioTokenizeR_score_length <- function(ann) {

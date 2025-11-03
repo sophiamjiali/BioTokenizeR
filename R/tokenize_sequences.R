@@ -17,7 +17,7 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
                                                vocab_size = vocab_size)
   
   # Perform the learned merges to generate tokens from the sequences
-  tokens <- .BioTokenizeR_apply_bpe(seqs = bioBPE_seqs$seqs, vocab = vocab))
+  tokens <- .BioTokenizeR_apply_bpe(seqs = bioBPE_seqs$seqs, vocab = vocab)
   
   return (vocab, tokens)
   
@@ -55,7 +55,7 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
   seqs <- as.character(bioBPE_seqs$seqs)
   tok_seqs <- vapply(seqs, function(s) 
     paste(strsplit(s, "")[[1]], collapse = " "), 
-    FUN.VALUE = character(1))
+    FUN.VALUE = character(1)
   )
   
   # Compute the biological score of each sequence based on their annotations
