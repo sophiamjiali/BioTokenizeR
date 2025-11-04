@@ -10,6 +10,64 @@
 
 # =====| Tokenize Sequences |===================================================
 
+#' Tokenize Biological Sequences Using BPE
+#'
+#' Learns a byte-pair encoding (BPE) vocabulary from preprocessed sequences and
+#' applies it to generate tokenized representations for downstream analysis.
+#'
+#' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed D
+#'    NA, RNA, or AA sequences.
+#' @param vocab_size An integer specifying the maximum size of the learned BPE 
+#'    vocabulary (default is 15).
+#'
+#' @return A list containing:
+#'    \describe{
+#'        \item{`vocab`}{The learned BPE vocabulary, including merges and base 
+#'            tokens.}
+#'        \item{`tokens`}{A list of tokenized sequences, where each sequence is 
+#'            a vector of token strings.}
+#'    }
+#'    
+#' @details The tokenization step includes learning the BPE vocabulary and 
+#'    applying it to the sequences. The exact operations are delegated into
+#'    internal helper functions:
+#'    \itemize{
+#'        \item `.BioTokenizeR_apply_bpe()` to apply the learned vocabulary to
+#'            the sequences.
+#'        \item `.BioTokenizeR_learn_bpe_vocabulary` to learn the BPE vocabulary
+#'        \item `.BioTokenizeR_compute_bio_pair_frequencies` to compute 
+#'            biology-aware token pair frequencies within the BPE algorithm
+#'        \item `.BioTokenizeR_merge_best_pair` to merge the best token pair
+#'            within the BPE algorithm
+#'    }
+#'    
+#' @examples
+#' \dontrun{
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = TRUE,
+#'        annotate   = TRUE,
+#'        tokenize   = FALSE,
+#'        summarize  = FALSE,
+#'        verbose    = FALSE
+#'    )
+#'    
+#'    # Tokenize the preprocessed and annotated sequences
+#'    dna_tokens <- tokenize_sequences(bioBPE_seqs = data$dna_annot,
+#'                                     vocab_size  = 15)
+#'    rna_tokens <- tokenize_sequences(bioBPE_seqs = data$rna_annot,
+#'                                     vocab_size  = 15)
+#'    aa_tokens <- tokenize_sequences(bioBPE_seqs = data$aa_annot,
+#'                                    vocab_size  = 15)
+#' }
+#'
+#' @family tokenization
+#' @keywords tokenization internal
+#' 
+#' @export
 tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
   
   # Verify that the sequences object is of class bioBPE_preprocessed
@@ -41,9 +99,25 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
     vocab = vocab, 
     tokens = tokens
   ))
-  
 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#' Apply Learned BPE Vocabulary to Sequences
+#'
+#' Converts sequences into tokenized form using a learned byte-pair encoding (BPE)
+#' vocabulary. Base tokens are first converted to integer IDs, and learned merges
+#' are applied sequentially to generate final tokenized sequences.
+#'
+#' @param seqs A character vector of sequences to tokenize.
+#' @param vocab A list returned by `.BioTokenizeR_learn_bpe_vocabulary` 
+#'    containing base tokens and the learned merge operations.
+#'
+#' @return A list of tokenized sequences, where each element is a character  
+#'    vector of tokens corresponding to a single sequence.
+#'
+#' @family tokenization
+#' @keywords tokenization internal
 .BioTokenizeR_apply_bpe <- function(seqs, vocab) {
   
   # Verify that the input was provided appropriately
@@ -88,6 +162,29 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 
 # =====| Learn BPE Vocabulary |=================================================
 
+#' Learn Byte-Pair Encoding (BPE) Vocabulary from Biological Sequences
+#'
+#' Learns a BPE vocabulary from preprocessed biological sequences by 
+#' iteratively identifying the most frequent adjacent token pairs and merging 
+#' them into new tokens until the specified vocabulary size is reached. 
+#' The process is weighted by biological scores derived from sequence annotations.
+#'
+#' @param bioBPE_seqs A `bioBPE_preprocessed` object containing sequences and 
+#'    annotation metadata.
+#' @param vocab_size Integer specifying the desired maximum size of the learned 
+#'    BPE vocabulary (default 15).
+#'
+#' @return A list containing:
+#'    \describe{
+#'        \item{vocab}{Character vector of all tokens in the learned BPE vocabulary.}
+#'        \item{merges}{List of integer pairs representing the merge operations 
+#'            applied.}
+#'        \item{bio_scores}{Numeric vector of biological scores associated with each
+#'            sequence.}
+#'    }
+#'
+#' @family tokenization
+#' @keywords tokenization internal
 .BioTokenizeR_learn_bpe_vocabulary <- function(bioBPE_seqs, vocab_size = 15) {
   
   # Initialize sequences as integer token vectors, initializing a mapping
@@ -117,7 +214,6 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
       id_seqs = id_seqs, 
       bio_scores = bio_scores
     )
-    print("Computed pair frequencies")
     if (length(pair_freqs) == 0) break
     
     # Find the most frequent pair
@@ -158,7 +254,24 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
   return (bpe_vocabulary)
 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#' Compute Biologically-Weighted Pair Frequencies for BPE
+#'
+#' Calculates the frequency of all adjacent token pairs in a set of integer-
+#' encoded sequences, weighting each pair by a biological score associated 
+#' with its sequence. Pairs are represented as space-separated strings of 
+#' integer token IDs.
+#'
+#' @param id_seqs A list of integer vectors representing tokenized sequences.
+#' @param bio_scores Numeric vector of biological scores, one per sequence, 
+#'    used to weight the pair frequencies.
+#'
+#' @return A named numeric vector of weighted pair counts, with names being 
+#'    space-separated token ID pairs (e.g., `"1 2"`), sorted in decreasing order.
+#'
+#' @family tokenization
+#' @keywords tokenization internal
 .BioTokenizeR_compute_bio_pair_frequencies <- function(id_seqs, bio_scores) {
   
   # Verify that the number of bio-scores match the number of sequences
@@ -188,7 +301,24 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
   return (pair_counts)
 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#' Merge a Specified Token Pair in Integer-Encoded Sequences
+#'
+#' Replaces all occurrences of a specified adjacent token pair `(a, b)` in a 
+#' list of integer-encoded sequences with a new merged token ID. Sequences 
+#' that are too short or do not contain the pair are returned unchanged.
+#'
+#' @param id_seqs A list of integer vectors representing tokenized sequences.
+#' @param a Integer ID of the first token in the pair to merge.
+#' @param b Integer ID of the second token in the pair to merge.
+#' @param new_id Integer ID to assign to the merged token.
+#'
+#' @return A list of integer vectors, with the specified pairs replaced by 
+#'    `new_id`.
+#'
+#' @family tokenization
+#' @keywords tokenization internal
 .BioTokenizeR_merge_best_pair <- function(id_seqs, a, b, new_id) {
   
   # Verify that the input was provided appropriately
