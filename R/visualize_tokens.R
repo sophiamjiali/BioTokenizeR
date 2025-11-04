@@ -4,11 +4,72 @@
 # Date:               2025-11-01
 # Version:            1.0
 # Bugs and Issues:    N/A
-# Notes:              
+# Notes:              Provides a wrapper to generate all three plots along with
+#                     individual generation and return
 # ==============================================================================
 
 # =====| Visualization Wrapper |================================================
 
+#' Visualize Tokenized Sequence Statistics
+#'
+#' Generates visual summaries of tokenized biological sequences, including
+#' token frequency distribution, top tokens, and cumulative coverage.
+#'
+#' @param statistics An object of class `"bioBPE_summary"` returned by
+#'    `summarize_tokens()`.
+#' @param top_n Integer specifying the number of top tokens to display in
+#'    the top tokens plot. Default is 30.
+#' @param output_dir Optional directory to save plots. If `NULL`, plots are
+#'    returned but not saved.
+#'
+#' @return A named list of plots: 
+#'    \describe{
+#'        \item{`frequency_distribution`}{A line plot visualizing token rank 
+#'            (log-scale) versus frequency (log-scale).}
+#'        \item{`top_tokens`}{A bar plot visualizing the most frequent tokens.}
+#'        \item{`cumulative_coverage`}{A line plot visualizing the cumulative
+#'            coverage of ranked tokens.}
+#'    }
+#'    
+#' @details The visualization step includes three plots. The exact operations 
+#'    are delegated to the following functions:
+#'    \itemize{
+#'        \item `plot_token_frequency_distribution` to visualize token frequency
+#'        \item `plot_top_tokens` to visualize the top N tokens
+#'        \item `plot_cumulative_coverage` to visualize the cumulative coverage
+#'            across token ranks
+#'    }
+#' 
+#' @examples
+#' \dontrun{
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = TRUE,
+#'        annotate   = TRUE,
+#'        tokenize   = TRUE,
+#'        summarize  = TRUE,
+#'        verbose    = FALSE
+#'    )
+#'    
+#'    # Visualize the tokenized sequences
+#'    dna_plots <- visualize_tokens(statistics = data$dna_summary,
+#'                                  top_n = 30,
+#'                                  output_dir = "output")
+#'    rna_plots <- visualize_tokens(statistics = data$rna_summary,
+#'                                  top_n = 30,
+#'                                  output_dir = "output")
+#'    ana_plots <- visualize_tokens(statistics = data$aa_summary,
+#'                                  top_n = 30,
+#'                                  output_dir = "output")
+#' }
+#'
+#' @family visualization
+#' @keywords visualization
+#' 
+#' @export
 visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
   # Visualize and save all plots
@@ -29,6 +90,24 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 
 # =====| Token Frequency Distribution |=========================================
 
+#' Plot Token Rank-Frequency Distribution
+#'
+#' Creates a log-log plot of token frequency versus rank, providing a
+#' visual overview of token distribution across the corpus.
+#'
+#' @param statistics An object of class `"bioBPE_summary"` containing
+#'    token frequency information.
+#' @param output_dir Optional directory to save the plot. If `NULL`, the plot
+#'    is returned but not saved.
+#'
+#' @return A `ggplot2` object representing the rank-frequency distribution
+#'    of tokens.
+#'
+#' @family visualization
+#' @keywords visualization
+#' 
+#' @import ggplot2
+#' @export
 plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
   
   # Verify that the statistics provided includes token frequencies
@@ -40,16 +119,18 @@ plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
                                freq = as.numeric(token_freq))
   
   # Plot token lengths as a line-plot
-  bar_plot <- ggplot2::ggplot(token_freq, ggplot2::aes(x = rank, y = freq)) +
+  line_plot <- ggplot2::ggplot(token_freq, ggplot2::aes(x = rank, y = freq)) +
     ggplot2::geom_line(color = "#1B4F72", linewidth = 1.1) +
+    ggplot2::scale_x_log10() + 
     ggplot2::scale_y_log10() +
     ggplot2::theme_minimal(base_size = 13) +
     ggplot2::labs(
-      title = "Token Rank-Frequency Distribution",
+      title = "Token Rank-Frequency Distribution (log-scale)",
       x     = "Token Rank (log-scale)", 
       y     = "Frequency (log-scale)"
     ) +
-    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
+    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold",
+                                                      hjust = 0.5))
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
@@ -57,19 +138,37 @@ plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
     
     ggplot2::ggsave(
       filename = file.path(output_dir, "token_frequency_distribution.png"),
-      plot     = bar_plot,
+      plot     = line_plot,
       dpi      = 300,
       width    = 6,
       height   = 4
     )
   }
   
-  return (bar_plot)
+  return (line_plot)
 }
 
 
 # =====| Top N Most Frequent Tokens |===========================================
 
+#' Plot Top N Most Frequent Tokens
+#'
+#' Generates a horizontal bar plot showing the top `N` most frequent tokens
+#' in the tokenized sequences.
+#'
+#' @param statistics An object of class `"bioBPE_summary"` containing token
+#'    frequency data.
+#' @param top_n Integer specifying the number of top tokens to display.
+#' @param output_dir Optional directory to save the plot. If `NULL`, the plot
+#'    is returned but not saved.
+#'
+#' @return A `ggplot2` object representing the top `N` most frequent tokens.
+#'
+#' @family visualization
+#' @keywords visualization
+#' 
+#' @import ggplot2
+#' @export
 plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
   # Verify that the statistics provided include token summaries
@@ -98,7 +197,8 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
       x     = "Token",
       y     = "Frequency"
     ) +
-    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
+    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold",
+                                                      hjust = 0.5))
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
@@ -113,12 +213,29 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
     )
   }
   
-  return (top_tokens)
+  return (bar_plot)
 } 
 
 
 # =====| Cumulative Coverage |==================================================
 
+#' Plot Cumulative Token Frequency Coverage
+#'
+#' Generates a line plot showing the cumulative frequency coverage of tokens
+#' in the tokenized sequences, ranked from most to least frequent.
+#'
+#' @param statistics An object of class `"bioBPE_summary"` containing token
+#'    frequency data.
+#' @param output_dir Optional directory to save the plot. If `NULL`, the plot
+#'    is returned but not saved.
+#'
+#' @return A `ggplot2` object representing cumulative token frequency coverage.
+#'
+#' @family visualization
+#' @keywords visualization plotting tokenization
+#'
+#' @import ggplot2
+#' @export
 plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
   
   # Verify that the statistics provided include token summaries
@@ -141,7 +258,8 @@ plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
       x     = "Ranked Tokens",
       y     = "Cumulative Frequency"
     ) +
-    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
+    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold",
+                                                      hjust = 0.5))
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
