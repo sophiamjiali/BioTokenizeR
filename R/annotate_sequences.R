@@ -19,6 +19,52 @@ POLAR <- c("S", "T", "N", "Q")
 
 # =====| Annotation Wrapper |===================================================
 
+#' Annotate Biological Sequences for BPE Workflows
+#'
+#' Adds biological annotations to preprocessed sequences, preparing them for
+#' downstream byte-pair encoding (BPE) tokenization and analysis.
+#' Annotation steps depend on the sequence type (DNA, RNA, or amino acids).
+#'
+#' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed 
+#'    sequences (DNA, RNA, or AA).
+#'
+#' @return The same `bioBPE_preprocessed` object with the `seqs` updated with
+#'    annotations and `annot_steps` recording the steps applied.
+#'    
+#' @details The annotation step may include annotating sequence length, GC 
+#'    content, hydrophobic fraction, charged fraction, polar fraction, or 
+#'    composition entropy, depending on sequence type. The exact operations are 
+#'    delegated to internal helper functions:
+#'    \itemize{
+#'        \item `.BioTokenizeR_annotate_DNA()` for DNA sequences
+#'        \item `.BioTokenizeR_annotate_RNA()` for RNA sequences
+#'        \item `.BioTokenizeR_annotate_AA()` for amino acid sequences
+#'    }
+#'    
+#' @examples
+#' \dontrun{
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = TRUE,
+#'        annotate   = FALSE,
+#'        tokenize   = FALSE,
+#'        summarize  = FALSE,
+#'        verbose    = FALSE
+#'    )
+#'   
+#'    # Annotate the sequences
+#'    dna_annot <- annotate_sequences(bioBPE_seqs = data$dna_preproc)
+#'    rna_annot <- annotate_sequences(bioBPE_seqs = data$rna_preproc)
+#'    aa_annot <- annotate_sequences(bioBPE_seqs = data$aa_preproc)
+#' }
+#' 
+#' @family annotation
+#' @keywords annotation internal
+#' 
+#' @export
 annotate_sequences <- function(bioBPE_seqs) {
   
   # Verify that the sequences object is of class bioBPE_preprocessed
@@ -49,6 +95,25 @@ annotate_sequences <- function(bioBPE_seqs) {
 
 # =====| Annotation Functions |=================================================
 
+#' Annotate DNA Sequences for BPE Workflows
+#'
+#' Computes basic annotations for DNA sequences, including sequence length and
+#' GC content, for downstream byte-pair encoding (BPE) analysis.
+#'
+#' @param seqs A `Biostrings::DNAStringSet` object containing preprocessed DNA
+#'    sequences.
+#'
+#' @return A list with components:
+#'    \describe{
+#'        \item{`seqs`}{The input DNA sequences updated with metadata columns
+#'            (`length` and `gc_content`).}
+#'        \item{`steps`}{A character vector of annotation steps applied.}
+#'    }
+#'
+#' @family annotation
+#' @keywords annotation internal
+#' 
+#' @importFrom Biostrings letterFrequency
 .BioTokenizeR_annotate_DNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
@@ -63,7 +128,27 @@ annotate_sequences <- function(bioBPE_seqs) {
   return (list(seqs = seqs, steps = steps))
 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#' Annotate RNA Sequences for BPE Workflows
+#'
+#' Computes basic annotations for DNA sequences, including sequence length and
+#' GC content, for downstream byte-pair encoding (BPE) analysis.
+#'
+#' @param seqs A `Biostrings::RNAStringSet` object containing preprocessed DNA
+#'    sequences.
+#'
+#' @return A list with components:
+#'    \describe{
+#'        \item{`seqs`}{The input RNA sequences updated with metadata columns
+#'            (`length` and `gc_content`).}
+#'        \item{`steps`}{A character vector of annotation steps applied.}
+#'    }
+#'
+#' @family annotation
+#' @keywords annotation internal
+#' 
+#' @importFrom Biostrings letterFrequency
 .BioTokenizeR_annotate_RNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
@@ -78,7 +163,27 @@ annotate_sequences <- function(bioBPE_seqs) {
   return (list(seqs = seqs, steps = steps))
 }
 
-
+#' Annotate AA Sequences for BPE Workflows
+#'
+#' Computes basic annotations for AA sequences, including sequence length, 
+#' hydrophobic fraction, charged fraction, polar fraction, and composition
+#' entropy, for downstream byte-pair encoding (BPE) analysis.
+#'
+#' @param seqs A `Biostrings::AAStringSet` object containing preprocessed DNA
+#'    sequences.
+#'
+#' @return A list with components:
+#'    \describe{
+#'        \item{`seqs`}{The input AA sequences updated with metadata columns
+#'            (`length`, `hydrophobic_fraction`, `charged_fraction`,
+#'            `polar_fraction`, and `composition_entropy`).}
+#'        \item{`steps`}{A character vector of annotation steps applied.}
+#'    }
+#'
+#' @family annotation
+#' @keywords annotation internal
+#' 
+#' @importFrom Biostrings letterFrequency
 .BioTokenizeR_annotate_AA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
