@@ -54,8 +54,7 @@ summarize_tokens <- function(tokens) {
       token = names(token_freq),
       frequency = as.numeric(token_freq),
       length = token_length,
-      gc_like = gc_like,
-      origin = token_origin
+      gc_like = gc_like
     ),
     token_length_summary = token_length_summary
   )
