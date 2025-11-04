@@ -26,13 +26,13 @@ annotate_sequences <- function(bioBPE_seqs) {
     stop("'bioBPE_seqs' must be a bioBPE_preprocessed.")
   }
   
-  # Verify that the sequences object is non-empty
-  if (length(bioBPE_seqs) == 0) {
-    stop("'bioBPE_seqs' cannot be empty.")
+  # Verify that not all sequences are of length zero
+  if (all(width(bioBPE_seqs$seqs) == 0)) {
+    stop("'bioBPE_seqs' must contain at least one sequence that is not empty.")
   }
   
   # Annotate the sequences based on type
-  annotation <- switch(type,
+  annotation <- switch(bioBPE_seqs$type,
     "DNA" = .BioTokenizeR_annotate_DNA(bioBPE_seqs$seqs),
     "RNA" = .BioTokenizeR_annotate_RNA(bioBPE_seqs$seqs),
     "AA" = .BioTokenizeR_annotate_AA(bioBPE_seqs$seqs),

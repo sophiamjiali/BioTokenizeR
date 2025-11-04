@@ -10,16 +10,37 @@
 
 # =====| Tokenize Sequences |===================================================
 
-tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
+tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
+  
+  # Verify that the sequences object is of class bioBPE_preprocessed
+  if (!inherits(bioBPE_seqs, "bioBPE_preprocessed")) {
+    stop("'bioBPE_seqs' must be a bioBPE_preprocessed.")
+  }
+  
+  # Verify that not all sequences are of length zero
+  if (all(width(bioBPE_seqs$seqs) == 0)) {
+    stop("'bioBPE_seqs' must contain at least one sequence that is not empty.")
+  }
+  
+  # Verify that the vocabulary size is greater than zero
+  if (vocab_size <= 0) {
+    stop("'vocab_size' must be greater or equal to one.")
+  }
   
   # Learn the BPE vocabulary using all sequences
   vocab <- .BioTokenizeR_learn_bpe_vocabulary(bioBPE_seqs = bioBPE_seqs, 
                                                vocab_size = vocab_size)
   
   # Perform the learned merges to generate tokens from the sequences
-  tokens <- .BioTokenizeR_apply_bpe(seqs = bioBPE_seqs$seqs, vocab = vocab)
+  tokens <- .BioTokenizeR_apply_bpe(
+    seqs = as.character(bioBPE_seqs$seqs), 
+    vocab = vocab
+  )
   
-  return (vocab, tokens)
+  return (list(
+    vocab = vocab, 
+    tokens = tokens
+  ))
   
 }
 
@@ -27,10 +48,15 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
   
   # Verify that the input was provided appropriately
   if (!is.character(seqs)) stop("'seqs' must be a character vector.")
-  if (!is.list(vocab) || is.null(vocab$merges)) {
+  if (!is.list(vocab)) {
     stop(paste0("'vocab' must be a list returned by ",
                 ".BioTokenizeR_learn_bpe_vocabulary."))
   }
+  
+  # Convert sequences to space-separated tokens
+  seqs <- vapply(seqs, function(s) {
+    paste(strsplit(s, "")[[1]], collapse = " ")
+  }, character(1))
   
   # Apply the merges to each sequence in the learned order
   for (merge in vocab$merges) {
@@ -40,16 +66,20 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
     
     # Replace each occurrence of the merge in all sequences
     seqs <- vapply(seqs, function(s) {
-      gsub(paste0("\\b", merge, "\\b"), merged_token, s, perl = TRUE)
-    }, FUN.VALUE = character(1))
+      gsub(merge, merged_token, s, fixed = TRUE)
+    }, character(1))
   }
   
-  return (seqs)
+  # Convert space-separated strings to lists of vectors
+  seqs <- unname(seqs)
+  token_lists <- strsplit(seqs, " ", fixed = TRUE)
+  
+  return (token_lists)
 }
 
 # =====| Learn BPE Vocabulary |=================================================
 
-.BioTokenizeR_learn_bpe_vocabulary <- function(bioBPE_seqs, vocab_size = 1000) {
+.BioTokenizeR_learn_bpe_vocabulary <- function(bioBPE_seqs, vocab_size = 15) {
   
   # Tokenize the sequences into single-character tokens: string with spaces
   seqs <- as.character(bioBPE_seqs$seqs)
@@ -59,10 +89,19 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
   )
   
   # Compute the biological score of each sequence based on their annotations
-  bio_score <- .BioTokenizeR_compute_bio_score(bioBPE_seqs = bioBPE_seqs)
+  bio_scores <- .BioTokenizeR_compute_bio_score(bioBPE_seqs = bioBPE_seqs)
   
   # Initialize the vocabulary as individual characters (tokens)
-  vocab <- unique(unlist(strsplit(as.character(unlist(seqs)), " ")))
+  vocab <- unique(unlist(strsplit(seqs, "")))
+  
+  # If the base vocabulary is larger than the vocabulary size, exit early
+  if (length(vocab) >= vocab_size) {
+    return (list(
+      vocab = vocab,
+      merges = NULL,
+      bio_scores = bio_scores
+    ))
+  }
   
   # Iteratively learn merges until the desired vocabulary size is reached
   merges <- list()
@@ -91,16 +130,16 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 1000) {
     )
     merges[[length(merges) + 1]] <- best_pair
     
-    # Update the vocabulary with the best merged pairing
-    vocab <- unique(c(vocab, best_pair))
+    # Update the vocabulary with the best merged pairing, removing the space
+    new_token <- gsub(" ", "", best_pair)
+    vocab <- unique(c(vocab, new_token))
   }
   
   # Return the vocabulary as a list
   bpe_vocabulary <- list(
     vocab = vocab,
     merges = merges,
-    bio_scores = bio_scores,
-    type = type
+    bio_scores = bio_scores
   )
   
   return (bpe_vocabulary)

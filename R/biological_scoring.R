@@ -36,8 +36,11 @@ BIO_SCORE_WEIGHTS = list(
   )
   
   # Compute a matrix of bio-scores for each sequence
-  scores <- lapply(bioBPE$annot_steps, function(a) ann_scoring[[a]](ann))
-  scores <- do.call(cbind, scores)
+  scores <- lapply(bioBPE_seqs$annot_steps, 
+    function(a) scoring_funcs[[a]](mcols(bioBPE_seqs$seqs))
+  )
+  scores <- as.matrix(do.call(cbind, scores))
+  colnames(scores) <- bioBPE_seqs$annot_steps
   
   # Apply annotation-weighting upon the computed scores
   weights <- unlist(BIO_SCORE_WEIGHTS)[colnames(scores)]
@@ -53,29 +56,31 @@ BIO_SCORE_WEIGHTS = list(
 }
 
 .BioTokenizeR_score_length <- function(ann) {
-  return (.BioTokenizeR_normalize(log(ann$length + 1)))
+  score <- as.numeric(.BioTokenizeR_normalize(log(ann$length + 1)))
+  return (score)
 }
 
 .BioTokenizeR_score_gc <- function(ann) {
-  return (.BioTokenizeR_normalize(ann$gc_content))
-}
-
-.BioTokenizeR_score_length <- function(ann) {
-  return (.BioTokenizeR_normalize(log(ann$length + 1)))
+  score <- as.numeric(.BioTokenizeR_normalize(ann$gc_content))
+  return (score)
 }
 
 .BioTokenizeR_score_hydrophobic <- function(ann) {
-  return (.BioTokenizeR_normalize(ann$hydrophobic_fraction))
+  score <- as.numeric(.BioTokenizeR_normalize(ann$hydrophobic_fraction))
+  return (score)
 }
 
 .BioTokenizeR_score_charged <- function(ann) {
-  return (.BioTokenizeR_normalize(ann$charged_fraction))
+  score <- as.numeric(.BioTokenizeR_normalize(ann$charged_fraction))
+  return (score)
 }
 
 .BioTokenizeR_score_polar <- function(ann) {
-  return (.BioTokenizeR_normalize(ann$polar_fraction))
+  score <- as.numeric(.BioTokenizeR_normalize(ann$polar_fraction))
+  return (score)
 }
 
 .BioTokenizeR_score_entropy <- function(ann) {
-  return (.BioTokenizeR_normalize(ann$composition_entropy))
+  score <- as.numeric(.BioTokenizeR_normalize(ann$composition_entropy))
+  return (score)
 }
