@@ -13,44 +13,50 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
   # Visualize and save all plots
   plots <- list(
-    length_distribution = plot_token_length_distribution(statistics, output_dir),
-    top_tokens          = plot_top_tokens(statistics, top_n),
-    cumulative_coverage = plot_cumulative_coverage(statistics)
+    frequency_distribution = plot_token_frequency_distribution(
+      statistics = statistics, output_dir = output_dir
+    ),
+    top_tokens             = plot_top_tokens(
+      statistics = statistics, top_n = top_n, output_dir = output_dir
+    ),
+    cumulative_coverage    = plot_cumulative_coverage(
+      statistics = statistics, output_dir = output_dir
+    )
   )
   
   return (plots)
 }
 
-# =====| Token Length Distribution |============================================
+# =====| Token Frequency Distribution |=========================================
 
-plot_token_length_distribution <- function(statistics, output_dir = NULL) {
+plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
   
-  # Verify that the statistics provided includes token lengths
-  token_lengths <- statistics$token_length_summary
-  if (is.null(token_lengths)) stop("'statistics' must include token lengths.")
+  # Verify that the statistics provided includes token frequencies
+  token_freq <- statistics$token_summary$frequency
+  if (is.null(token_freq)) stop("'statistics' must include token frequencies.")
   
-  # Plot token lengths as a bar-plot
-  bar_plot <- ggplot2::ggplot(token_lengths, aes(x = length, y = frequency)) +
-    ggplot2::geom_bar(
-      stat      = "identity", 
-      fill      = "#4B9CD3", 
-      color     = "black", 
-      linewidth = 0.3
-    ) +
+  # Rank-transform the frequencies
+  token_freq <- tibble::tibble(rank = seq_along(token_freq), 
+                               freq = as.numeric(token_freq))
+  
+  # Plot token lengths as a line-plot
+  bar_plot <- ggplot2::ggplot(token_freq, ggplot2::aes(x = rank, y = freq)) +
+    ggplot2::geom_line(color = "#1B4F72", linewidth = 1.1) +
+    ggplot2::scale_y_log10() +
     ggplot2::theme_minimal(base_size = 13) +
     ggplot2::labs(
-      title = "Token Length Distribution",
-      x     = "Token Length (Characters)", 
-      y     = "Frequency"
+      title = "Token Rank-Frequency Distribution",
+      x     = "Token Rank (log-scale)", 
+      y     = "Frequency (log-scale)"
     ) +
-    ggplot2::theme(plot.title = element_text(face = "bold"))
+    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
     if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
     
-    ggplot2:ggsave(
-      filename = file.path(output_dir, "token_length_distribution.png"),
+    ggplot2::ggsave(
+      filename = file.path(output_dir, "token_frequency_distribution.png"),
       plot     = bar_plot,
       dpi      = 300,
       width    = 6,
@@ -76,8 +82,9 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
                 dplyr::slice_head(n = top_n)
   
   # Plot the top N most frequent tokens as a bar plot
-  bar_plot <- ggplot2::ggplot(top_tokens, aes(x = reorder(token, frequency), 
-                                              y = frequency)) +
+  bar_plot <- ggplot2::ggplot(top_tokens, 
+                              ggplot2::aes(x = reorder(token, frequency), 
+                                          y = frequency)) +
     ggplot2::geom_bar(
       stat      = "identity", 
       fill      = "#2E86AB", 
@@ -91,13 +98,13 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
       x     = "Token",
       y     = "Frequency"
     ) +
-    ggplot2::theme(plot.title = element_text(face = "bold"))
+    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
     if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
     
-    ggplot2:ggsave(
+    ggplot2::ggsave(
       filename = file.path(output_dir, "top_tokens.png"),
       plot     = bar_plot,
       dpi      = 300,
@@ -110,9 +117,9 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 } 
 
 
-# =====| Tokenize Sequences |===================================================
+# =====| Cumulative Coverage |==================================================
 
-plot_cumulative_coverage <- function(statistics) {
+plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
   
   # Verify that the statistics provided include token summaries
   token_summary <- statistics$token_summary
@@ -124,8 +131,9 @@ plot_cumulative_coverage <- function(statistics) {
                    dplyr::mutate(cumulative = cumsum(frequency) / sum(frequency))
   
   # Plot the cumulative coverage of each frequency
-  line_plot <- ggplot2::ggplot(token_summary, aes(x = seq_along(frequency), 
-                                                  y = cumulative)) +
+  line_plot <- ggplot2::ggplot(token_summary, 
+                               ggplot2::aes(x = seq_along(frequency), 
+                                           y = cumulative)) +
     ggplot2::geom_line(color = "#1B4F72", linewidth = 1.1) +
     ggplot2::theme_minimal(base_size = 13) +
     ggplot2::labs(
@@ -133,13 +141,13 @@ plot_cumulative_coverage <- function(statistics) {
       x     = "Ranked Tokens",
       y     = "Cumulative Frequency"
     ) +
-    ggplot2::theme(plot.title = element_text(face = "bold"))
+    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
     if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
     
-    ggplot2:ggsave(
+    ggplot2::ggsave(
       filename = file.path(output_dir, "cumulative_coverage.png"),
       plot     = line_plot,
       dpi      = 300,

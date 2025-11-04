@@ -25,12 +25,12 @@ summarize_tokens <- function(tokens) {
   # Compute basic corpus-level statistics
   num_sequences <- length(tokens)
   total_tokens <- length(all_tokens)
-  avg_seq_length <- mean(length(tokens))
-  median_seq_length <- median(length(tokens))
+  avg_seq_length <- mean(lengths(tokens))
+  median_seq_length <- median(lengths(tokens))
   
   # Compute token-level frequency summary
   token_freq <- sort(table(all_tokens), decreasing = TRUE)
-  vocab_size <- length(token_freq)
+  vocab_size <- length(unique(token_freq))
   
   # Compute token length summary
   token_length <- nchar(names(token_freq))
