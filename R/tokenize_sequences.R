@@ -127,6 +127,7 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
     # Decode the integer IDs of the best pair found, storing the merge
     pair_ids <- as.integer(strsplit(pair_key, " ")[[1]])
     if (length(pair_ids) != 2 || any(is.na(pair_ids))) break
+    
     a <- pair_ids[1]; b <- pair_ids[2]
     
     # Stop if frequency was returned as zero or if the vocabulary size is max
@@ -140,7 +141,6 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
     # Merge the pair in all sequences
     id_seqs <- .BioTokenizeR_merge_best_pair(id_seqs = id_seqs, a = a, b = b, 
                                              new_id = new_id)
-    print("Merged best pair")
     
     # Update the vocabulary (integer-token mapping) with the merged pair
     id_to_token[[as.character(new_id)]] <- paste0(id_to_token[[as.character(a)]], 
@@ -166,47 +166,26 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
     stop("Length of 'id_seqs' and 'bio_scores' must match.")
   }
   
-  # Concatenate all sequences into a single vector, skipping those too short
-  lengths <- vapply(id_seqs, length, integer(1))
-  if (any(lengths < 2)) {
-    id_seqs <- id_seqs[lengths >= 2]
-    bio_scores <- bio_scores[lengths >= 2]
-    lengths <- lengths[lengths >= 2]
-  }
+  # Filter out sequences too short to form pairs
+  keep <- vapply(id_seqs, length, integer(1)) >= 2
+  if (!any(keep)) return (numeric(0))
+  id_seqs <- id_seqs[keep]
+  bio_scores <- bio_scores[keep]
   
-  offsets <- cumsum(c(0, lengths))
-  all_ids <- unlist(id_seqs)
-  n_total <- length(all_ids)
+  # Build vectors of adjacent pairs and repeat bio_scores for each pair
+  left <- unlist(lapply(id_seqs, function(x) x[-length(x)]))
+  right <- unlist(lapply(id_seqs, function(x) x[-1]))
+  score_vec <- unlist(mapply(function(ids, s) rep(s, length(ids) - 1),
+                             id_seqs, bio_scores, SIMPLIFY = FALSE))
   
-  # Prepare left and right adjacent token vectors
-  left <- all_ids[-n_total]
-  right <- all_ids[-1]
+  # Encode pairs as strings for counting
+  pair_keys <- paste(left, right)
   
-  # Mask to keep only pairs within the same sequence
-  seq_ends <- offsets[-1]
-  mask <- !(seq_along(left) %in% seq_ends)
-  left <- left[mask]
-  right <- right[mask]
+  # Compute weighted counts per pair
+  pair_counts <- tapply(score_vec, pair_keys, sum)
+  pair_counts <- sort(pair_counts, decreasing = TRUE)
   
-  # Assign bio_scores to each pair
-  score_vec <- rep(bio_scores, times = lengths - 1)
-  score_vec <- score_vec[mask]
-  
-  # Encode pair as single integers for faster tabulation
-  max_id <- max(all_ids) + 1L 
-  pair_ids <- left * max_id + right
-  
-  # Compute weighted counts
-  counts <- tapply(score_vec, pair_ids, sum)
-  
-  # Decode the pair IDs back to two integers
-  pair_keys <- as.integer(names(counts))
-  a <- pair_keys %/% max_id
-  b <- pair_keys %% max_id
-  names(counts) <- paste(a, b)
-  counts <- sort(counts, decreasing = TRUE)
-  
-  return (counts)
+  return (pair_counts)
 }
 
 
