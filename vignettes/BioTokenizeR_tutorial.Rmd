@@ -96,7 +96,7 @@ We can summarize the tokenized sequences to understand the distribution of
 tokens across the corpus. This includes frequencies, token lengths, and
 GC-like content.
 ```{r}
-stats <- summarize_tokens(statistics = bpe_results$tokens)
+stats <- summarize_tokens(tokens = bpe_results$tokens)
 stats
 ```
 
