@@ -114,6 +114,7 @@ annotate_sequences <- function(bioBPE_seqs) {
 #' @keywords annotation internal
 #' 
 #' @importFrom Biostrings letterFrequency
+#' @import S4Vectors
 .BioTokenizeR_annotate_DNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
@@ -149,6 +150,7 @@ annotate_sequences <- function(bioBPE_seqs) {
 #' @keywords annotation internal
 #' 
 #' @importFrom Biostrings letterFrequency
+#' @import S4Vectors
 .BioTokenizeR_annotate_RNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
@@ -186,6 +188,7 @@ annotate_sequences <- function(bioBPE_seqs) {
 #' @keywords annotation internal
 #' 
 #' @importFrom Biostrings letterFrequency
+#' @import S4Vectors
 .BioTokenizeR_annotate_AA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
