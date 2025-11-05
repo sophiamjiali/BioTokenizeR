@@ -21,17 +21,18 @@ analysis. Unlike other tools that focus solely on sequence alignment or
 motif search, `BioTokenizeR` allows researchers to quantitatively
 explore sequence composition and token-based features efficiently.
 
-This package was developed in the following environment: <br> R Version:
-4.5.1 (2025-06-13) – “Great Square Root” <br> Platform:
-aarch64-apple-darwin20
+This package was developed in the following environment:
+
+    R Version: 4.5.1 (2025-06-13) -- "Great Square Root"
+    Platform: aarch64-apple-darwin20
+    Running under: MacOS Sequoia 15.6.1
 
 ## Installation
 
 To install the latest version of the package:
 
 ``` r
-install.packages("devtools")
-library("devtools")
+require("devtools")
 devtools::install_github("sophiamjiali/BioTokenizeR", build_vignettes = TRUE)
 library("BioTokenizeR")
 ```
@@ -47,16 +48,22 @@ ls("package:BioTokenizeR")
 browseVignettes("BioTokenizeR")
 ```
 
-User-accessible functions include: - preprocess_sequences(): preprocess
-raw sequences for tokenization - annotate_sequences(): adds biological
-annotations to preprocessed sequences - tokenize_sequences(): performs
-BPE-style tokenization of the sequences - summarize_sequences():
-computes summary statistics of the tokenized sequences -
-visualize_sequences(): visualizes the tokenization summary statistics
-(all plots) - plot_token_frequency_distribution(): visualizes the token
-frequency distribution - plot_top_tokens(): visualizes the top N
-tokens - plot_cumulative_coverage(): visualizes the cumulative coverage
-across ranks
+User-accessible functions include:
+
+- `preprocess_sequences()`: preprocess raw sequences for tokenization
+- `annotate_sequences()`: adds biological annotations to preprocessed
+  sequences
+- `tokenize_sequences()`: performs BPE-style tokenization of the
+  sequences
+- `summarize_sequences()`: computes summary statistics of the tokenized
+  sequences
+- `visualize_sequences()`: visualizes the tokenization summary
+  statistics (all plots)
+- `plot_token_frequency_distribution()`: visualizes the token frequency
+  distribution
+- `plot_top_tokens()`: visualizes the top N tokens
+- `plot_cumulative_coverage()`: visualizes the cumulative coverage
+  across ranks
 
 ![](./inst/extdata/BioTokenizeR_pipeline.png)
 

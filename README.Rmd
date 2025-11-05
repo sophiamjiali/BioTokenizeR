@@ -14,45 +14,52 @@ knitr::opts_chunk$set(
 ```
 
 # BioTokenizeR
+
 Biology-aware Byte-pair Encoding (BPE) Tokenizer for biological sequences
 
 
 ## Description
+
 `BioTokenizeR` is an R package designed to streamline the tokenization and analysis of biological sequence data, including DNA, RNA, and protein sequences. It provides functions to process raw sequences, generate tokenized representations, compute metrics such as token frequency and length distributions, and visualize the results in a research-ready format.
 
 The package enhances current bioinformatics workflows by offering a reproducible, automated framework for sequence tokenization and analysis. Unlike other tools that focus solely on sequence alignment or motif search, `BioTokenizeR` allows researchers to quantitatively explore sequence composition and token-based features efficiently.
 
 This package was developed in the following environment:
-<br>
+```
 R Version: 4.5.1 (2025-06-13) -- "Great Square Root"
-<br>
 Platform: aarch64-apple-darwin20
+Running under: MacOS Sequoia 15.6.1
+```
 
 ## Installation
+
 To install the latest version of the package:
 ```{r installation, eval=FALSE}
-install.packages("devtools")
-library("devtools")
+require("devtools")
 devtools::install_github("sophiamjiali/BioTokenizeR", build_vignettes = TRUE)
 library("BioTokenizeR")
 ```
+
 To run the Shiny app: Under construction
 
 ## Overview
+
 The following commands provide a quick overview of the package
 ```{r overview_commands, eval=FALSE}
 ls("package:BioTokenizeR")
 browseVignettes("BioTokenizeR")
 ```
+
 User-accessible functions include:
-- preprocess_sequences(): preprocess raw sequences for tokenization
-- annotate_sequences(): adds biological annotations to preprocessed sequences
-- tokenize_sequences(): performs BPE-style tokenization of the sequences
-- summarize_sequences(): computes summary statistics of the tokenized sequences
-- visualize_sequences(): visualizes the tokenization summary statistics (all plots)
-- plot_token_frequency_distribution(): visualizes the token frequency distribution
-- plot_top_tokens(): visualizes the top N tokens
-- plot_cumulative_coverage(): visualizes the cumulative coverage across ranks
+
+- `preprocess_sequences()`: preprocess raw sequences for tokenization
+- `annotate_sequences()`: adds biological annotations to preprocessed sequences
+- `tokenize_sequences()`: performs BPE-style tokenization of the sequences
+- `summarize_sequences()`: computes summary statistics of the tokenized sequences
+- `visualize_sequences()`: visualizes the tokenization summary statistics (all plots)
+- `plot_token_frequency_distribution()`: visualizes the token frequency distribution
+- `plot_top_tokens()`: visualizes the top N tokens
+- `plot_cumulative_coverage()`: visualizes the cumulative coverage across ranks
 
 ![](./inst/extdata/BioTokenizeR_pipeline.png)
 
