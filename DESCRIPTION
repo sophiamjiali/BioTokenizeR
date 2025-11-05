@@ -17,7 +17,8 @@ BugReports: https://github.com/sophiamjiali/BioTokenizeR/issues
 Depends: 
     R (>= 4.5.1)
 Imports:
-    Biostrings
+    Biostrings,
+    S4Vectors
 Suggests:
     ggplot2,
     testthat (>= 3.0.0),
