@@ -117,11 +117,15 @@ Use the following citation to reference this package.
 
 ## References for the Development of this Package
 
-- R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+- Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM - Biologically‑Informed Tokenization Framework. bioRxiv.  https://doi.org/10.1101/2025.03.27.645711
 
 - Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.76.0, <https://bioconductor.org/packages/Biostrings>.
 
-- H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+- R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+
+- Sennrich R, Haddow B, Birch A (2016). Neural Machine Translation of Rare Words with Subword Units. Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics. Association for Computational Linguistics, 1715–1725. https://aclanthology.org/P16-1162
+
+- Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4, https://ggplot2.tidyverse.org.
 
 ```{r}
 # sessionInfo()
