@@ -28,6 +28,8 @@ commands in an R console.
 # require(devtools)
 # devtools::install_github("sophiamjiali/BioTokenizeR", build_vignettes = TRUE)
 library(BioTokenizeR)
+library(Biostrings)
+library(S4Vectors)
 ```
 
 To list all sample functions available in the package, run the following command
