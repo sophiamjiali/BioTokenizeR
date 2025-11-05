@@ -1,31 +1,33 @@
-Package: BioTokenizeR
 Type: Package
-Title: Biology-aware Byte-pair Encoding (BPE) Tokenizer for biological sequences
+Package: BioTokenizeR
+Title: Biology-aware Byte-pair Encoding (BPE) Tokenizer for biological
+    sequences
 Version: 1.0.0
-Authors@R: person("Sophia", "Li",
-                  email = "sophiamjia.li@mail.utoronto.ca",
-                  role = c("aut", "cre"))
+Authors@R: 
+    person("Sophia", "Li", , "sophiamjia.li@mail.utoronto.ca", role = c("aut", "cre"))
 Maintainer: Sophia Li <sophiamjia.li@mail.utoronto.ca>
-Description: BioTokenizeR is an R package for tokenizing biological sequences
-    (DNA, RNA, and proteins) by providing tools for generating, analyzing, and
-    visualizing biologically meaningful tokens. It aims to be the first R 
-    package to incorporate biological annotations into its byte-pair encoding
-    (BPE) (Sennrich et al., 2016) merge strategy.
+Description: BioTokenizeR is an R package for tokenizing biological
+    sequences (DNA, RNA, and proteins) by providing tools for generating,
+    analyzing, and visualizing biologically meaningful tokens. It aims to
+    be the first R package to incorporate biological annotations into its
+    byte-pair encoding (BPE) (Sennrich et al., 2016) merge strategy.
 License: MIT + file LICENSE
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Encoding: UTF-8
-LazyData: true
-Depends: R (>= 4.5.1)
-Imports:
-    Biostrings,
-    ggplot2
-Suggests:
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Config/Needs/website: https://cran.r-project.org
-VignetteBuilder: knitr
 URL: https://github.com/sophiamjiali/BioTokenizeR
 BugReports: https://github.com/sophiamjiali/BioTokenizeR/issues
+Depends: 
+    R (>= 4.5.1)
+Imports:
+    Biostrings
+Suggests:
+    ggplot2,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
+Config/Needs/website: https://cran.r-project.org
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3

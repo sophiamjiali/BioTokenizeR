@@ -163,6 +163,8 @@ annotate_sequences <- function(bioBPE_seqs) {
   return (list(seqs = seqs, steps = steps))
 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 #' Annotate AA Sequences for BPE Workflows
 #'
 #' Computes basic annotations for AA sequences, including sequence length, 

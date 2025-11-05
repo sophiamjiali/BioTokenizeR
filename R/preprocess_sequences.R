@@ -35,46 +35,44 @@ CANONICAL_AA  <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N",
 #'    sequences (e.g. `DNAStringSet`, `RNAStringSet`, or `AAStringSet`).
 #'
 #' @return An object of class `"bioBPE_preprocessed"`, being a list containing:
-#' \describe{
-#'    \item{`seqs`}{A character vector of preprocessed biological sequences.}
-#'    \item{`type`}{A string indicating the biological sequence type: `"DNA"`,
-#'        `"RNA"`, or `"AA"`.}
-#'    \item{`preproc_steps`}{A record of preprocessing steps applied.}
-#'    \item{`annot_steps`}{Annotation steps applied (initialized as `NULL`).}
-#' }
+#'    \describe{
+#'        \item{`seqs`}{A cleaned `Biostrings::XStringSet` object of 
+#'            preprocessed sequences.}
+#'        \item{`type`}{A string indicating the biological sequence type: 
+#'            `"DNA"`, `"RNA"`, or `"AA"`.}
+#'        \item{`preproc_steps`}{A record of preprocessing steps applied.}
+#'        \item{`annot_steps`}{Annotation steps applied (initialized as `NULL`).}
+#'    }
 #' 
-#' @details
-#' The preprocessing step may include sequence cleaning, normalization, or
-#' removal of invalid characters, depending on sequence type. The exact 
-#' operations are delegated to internal helper functions:
-#' \itemize{
-#'    \item `.BioTokenizeR_preprocess_DNA()` for DNA sequences
-#'    \item `.BioTokenizeR_preprocess_RNA()` for RNA sequences
-#'    \item `.BioTokenizeR_preprocess_AA()` for amino acid sequences
-#' }
+#' @details The preprocessing step may include sequence cleaning, normalization,
+#'    or removal of invalid characters, depending on sequence type. The exact 
+#'    operations are delegated to internal helper functions:
+#'    \itemize{
+#'        \item `.BioTokenizeR_preprocess_DNA()` for DNA sequences
+#'        \item `.BioTokenizeR_preprocess_RNA()` for RNA sequences
+#'        \item `.BioTokenizeR_preprocess_AA()` for amino acid sequences
+#'    }
 #' 
 #' @examples
 #' \dontrun{
-#'     # Generate simulated data
-#'     data <- generate_data(
-#'       n          = 3, 
-#'       length     = 1000, 
-#'       vocab_size = 25, 
-#'       preprocess = FALSE,
-#'       annotate   = FALSE,
-#'       tokenize   = FALSE,
-#'       summarize  = FALSE,
-#'       verbose    = FALSE
-#'     )
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = FALSE,
+#'        annotate   = FALSE,
+#'        tokenize   = FALSE,
+#'        summarize  = FALSE,
+#'        verbose    = FALSE
+#'    )
 #' 
-#'     # Preprocess the sequences
-#'     dna_preproc <- preprocess_sequences(seqs = data$dna_seq)
-#'     rna_preproc <- preprocess_sequences(seqs = data$rna_seq)
-#'     aa_preproc <- preprocess_sequences(seqs = data$aa_seq)
+#'    # Preprocess the sequences
+#'    dna_preproc <- preprocess_sequences(seqs = data$dna_seq)
+#'    rna_preproc <- preprocess_sequences(seqs = data$rna_seq)
+#'    aa_preproc <- preprocess_sequences(seqs = data$aa_seq)
 #' }
-#' @seealso [Biostrings::XstringSet], [Biostrings::DNAStringSet], 
-#'     [Biostrings::RNAStringSet], [Biostrings::AAStringSet]
-#'
+#' 
 #' @family preprocessing
 #' @keywords preprocessing internal
 #'     
@@ -130,7 +128,7 @@ preprocess_sequences <- function(seqs) {
 
 #' Preprocess DNA Sequences
 #'
-#'#' Performs standardized preprocessing of DNA sequences to prepare them for
+#' Performs standardized preprocessing of DNA sequences to prepare them for
 #' downstream byte-pair encoding (BPE) tokenization. Steps include case
 #' normalization, trimming ambiguous nucleotides, and removing invalid 
 #' characters.
@@ -138,10 +136,11 @@ preprocess_sequences <- function(seqs) {
 #' @param seqs A `Biostrings::DNAStringSet` object containing raw DNA sequences.
 #'
 #' @return A list with components:
-#' \describe{
-#'     \item{`seqs`}{A cleaned `DNAStringSet` object of preprocessed sequences.}
-#'     \item{`steps`}{A character vector describing preprocessing steps applied.}
-#' }
+#'    \describe{
+#'        \item{`seqs`}{A cleaned `Biostrings::DNAStringSet` object of 
+#'            preprocessed sequences.}
+#'        \item{`steps`}{A character vector describing preprocessing steps applied.}
+#'    }
 #'
 #' @family preprocessing
 #' @keywords preprocessing internal
@@ -184,10 +183,11 @@ preprocess_sequences <- function(seqs) {
 #' @param seqs A `Biostrings::RNAStringSet` object containing raw RNA sequences.
 #'
 #' @return A list with components:
-#' \describe{
-#'     \item{`seqs`}{A cleaned `RNAStringSet` object of preprocessed sequences.}
-#'     \item{`steps`}{A character vector describing preprocessing steps applied.}
-#' }
+#'    \describe{
+#'        \item{`seqs`}{A cleaned `Biostrings::RNAStringSet` object of 
+#'            preprocessed sequences.}
+#'        \item{`steps`}{A character vector describing preprocessing steps applied.}
+#'    }
 #'
 #' @family preprocessing
 #' @keywords preprocessing internal
@@ -229,10 +229,11 @@ preprocess_sequences <- function(seqs) {
 #' @param seqs A `Biostrings::AAStringSet` object containing raw AA sequences.
 #'
 #' @return A list with components:
-#' \describe{
-#'     \item{`seqs`}{A cleaned `AAStringSet` object of preprocessed sequences.}
-#'     \item{`steps`}{A character vector describing preprocessing steps applied.}
-#' }
+#'    \describe{
+#'        \item{`seqs`}{A cleaned `Biostrings::AAStringSet` object of 
+#'            preprocessed sequences.}
+#'        \item{`steps`}{A character vector describing preprocessing steps applied.}
+#'    }
 #'
 #' @family preprocessing
 #' @keywords preprocessing internal

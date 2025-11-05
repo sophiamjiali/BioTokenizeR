@@ -23,23 +23,26 @@ generate_data <- function(n          = 1,
                           preprocess = TRUE,
                           annotate   = TRUE,
                           tokenize   = TRUE,
-                          summarize  = TRUE) {
+                          summarize  = TRUE,
+                          verbose    = FALSE) {
   
   # Generate individual DNA, RNA, and AA sequences and preprocess them
-  dna_seq <- generate_sequences(type = "DNA", n = n, length = length)
+  #dna_seq <- generate_sequences(type = "DNA", n = n, length = length)
   rna_seq <- generate_sequences(type = "RNA", n = n, length = length)
   aa_seq <- generate_sequences(type = "AA", n = n, length = length)
+  if (verbose) cat("Generated", n * 3, "sequences of length", length, "\n")
   
   # Fetch the letters of all sequence
   dna_letters <- unlist(strsplit(as.character(dna_seq), split = ""))
-  rna_letters <- unlist(strsplit(as.character(rna_seq), split = ""))
-  aa_letters <- unlist(strsplit(as.character(aa_seq), split = ""))
+  #rna_letters <- unlist(strsplit(as.character(rna_seq), split = ""))
+  #aa_letters <- unlist(strsplit(as.character(aa_seq), split = ""))
   
   # Preprocess the sequences
   if (preprocess == TRUE) {
     dna_preproc <- preprocess_sequences(seqs = dna_seq)
     rna_preproc <- preprocess_sequences(seqs = rna_seq)
     aa_preproc <- preprocess_sequences(seqs = aa_seq)
+    if (verbose) cat("Preprocessed", n * 3, "sequences\n")
     
   } else {
     dna_preproc <- NULL
@@ -52,6 +55,7 @@ generate_data <- function(n          = 1,
     dna_annot <- annotate_sequences(bioBPE_seqs = dna_preproc)
     rna_annot <- annotate_sequences(bioBPE_seqs = rna_preproc)
     aa_annot <- annotate_sequences(bioBPE_seqs = aa_preproc)
+    if (verbose) cat("Annotated", n * 3, "sequences\n")
     
   } else {
     dna_annot <- NULL
@@ -63,10 +67,14 @@ generate_data <- function(n          = 1,
   if (all(c(preprocess, annotate, tokenize))) {
     dna_tokens <- tokenize_sequences(bioBPE_seqs = dna_annot, 
                                      vocab_size = vocab_size)
-    rna_tokens <- tokenize_sequences(bioBPE_seqs = rna_annot,
-                                     vocab_size = vocab_size)
-    aa_tokens <- tokenize_sequences(bioBPE_seqs = aa_annot,
-                                    vocab_size = vocab_size)
+    if (verbose) cat("Tokenized", n, "DNA sequences\n")
+   rna_tokens <- tokenize_sequences(bioBPE_seqs = rna_annot,
+                                   vocab_size = vocab_size)
+   if (verbose) cat("Tokenized", n, "RNA sequences\n")
+   aa_tokens <- tokenize_sequences(bioBPE_seqs = aa_annot,
+                                  vocab_size = vocab_size)
+   if (verbose) cat("Tokenized", n, "ANA sequences\n")
+    
   } else {
     dna_tokens <- NULL
     rna_tokens <- NULL
@@ -78,6 +86,7 @@ generate_data <- function(n          = 1,
     dna_summary <- summarize_tokens(tokens = dna_tokens$tokens)
     rna_summary <- summarize_tokens(tokens = rna_tokens$tokens)
     aa_summary <- summarize_tokens(tokens = aa_tokens$tokens)
+    if (verbose) cat("Summarized", n * 3, "sequences\n")
     
   } else {
     dna_summary <- NULL

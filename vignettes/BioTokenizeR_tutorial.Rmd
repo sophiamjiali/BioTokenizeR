@@ -1,0 +1,128 @@
+---
+title: "BioTokenizeR_tutorial"
+author: "Sophia Li"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BioTokenizeR_tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(repos = c(CRAN = "https://cran.r-project.org"))
+```
+
+## Introduction
+
+`BioTokenizeR` is an R package for tokenizing biological sequences (DNA, RNA, 
+AA), providing tools for generating, analyzing, and visualizing tokens through 
+biology-aware byte-pair encoding (BPE).
+
+To install and attach `BioTokenizeR` to a work session, run the following 
+commands in an R console.
+```{r}
+# require(devtools)
+# devtools::install_github("sophiamjiali/BioTokenizeR", build_vignettes = TRUE)
+library(BioTokenizeR)
+```
+
+To list all sample functions available in the package, run the following command
+in an R console.
+```{r}
+ls("package:BioTokenizeR")
+```
+
+Sample datasets are provided in the `data` subdirectory. To load them, run the
+following commands in an R console.
+```{r}
+dna_path <- system.file("extdata", "example_dna.rds", package = "BioTokenizeR")
+rna_path <- system.file("extdata", "example_rna.rds", package = "BioTokenizeR")
+aa_path <- system.file("extdata", "example_aa.rds", package = "BioTokenizeR")
+
+example_dna <- readRDS(dna_path)
+example_rna <- readRDS(rna_path)
+example_aa <- readRDS(aa_path)
+```
+
+## Workflow
+
+### Step 1. Load the data
+We first start by loading the data into the R environment. Here, we load the 
+provided example DNA dataset.
+```{r}
+dna_path <- system.file("extdata", "example_dna.rds", package = "BioTokenizeR")
+dna_seqs <- readRDS(dna_path)
+```
+
+### Step 2. Preprocess the data
+Preprocessing ensures that sequences are cleaned, normalized, and ready
+for downstream analysis. This includes trimming ambiguous nucleotides,
+removing invalid characters, and converting sequences to lowercase.
+```{r}
+dna_preproc <- preprocess_sequences(seqs = dna_seqs)
+dna_preproc
+```
+
+### Step 3. Annotate the data
+Next, we annotate sequences with relevant biological features. For DNA, this 
+typically includes sequence length and GC content. Annotation steps are stored 
+within the returned object for reproducibility.
+```{r}
+dna_annot <- annotate_sequences(bioBPE_seqs = dna_preproc)
+dna_annot
+```
+
+### Step 4. Tokenize the data
+Using the preprocessed and annotated sequences, we learn a BPE vocabulary and 
+tokenize the sequences. The vocabulary size can be adjusted depending on the 
+desired granularity.
+
+This will take approximately 45 seconds to run, depending on the local system.
+If tokenization does not complete after five minutes, reduce the vocabulary 
+size.
+```{r}
+bpe_results <- tokenize_sequences(bioBPE_seqs = dna_annot, vocab_size = 100)
+str(bpe_results)
+```
+
+### Step 5. Summarize the data
+We can summarize the tokenized sequences to understand the distribution of 
+tokens across the corpus. This includes frequencies, token lengths, and
+GC-like content.
+```{r}
+stats <- summarize_tokens(statistics = bpe_results$tokens)
+stats
+```
+
+### Step 6. Visualize the data
+Visualizations provide insight into token frequency distributions, the most 
+common tokens, and cumulative coverage across the corpus. An output directory
+can be specified to save all plots generated, or left NULL and not saved.
+```{r}
+plots <- visualize_tokens(stats, top_n = 10, output_dir = "output")
+
+plots$frequency_distribution
+plots$top_tokens
+plots$cumulative_coverage
+```
+
+## Referencing this Package
+
+Use the following citation to reference this package.
+- Li, S. (2025) BioTokenizeR: Biology-Aware Byte-Pair Encoding Tokenization of Biological Sequences. Unpublished. https://github.com/sophiamjiali/BioTokenizeR
+
+## References for the Development of this Package
+
+- R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+
+- Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.76.0, <https://bioconductor.org/packages/Biostrings>.
+
+- H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+
+```{r}
+# sessionInfo()
+```
