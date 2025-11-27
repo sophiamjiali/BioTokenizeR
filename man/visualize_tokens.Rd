@@ -61,7 +61,7 @@ across token ranks
    rna_plots <- visualize_tokens(statistics = data$rna_summary,
                                  top_n = 30,
                                  output_dir = "output")
-   ana_plots <- visualize_tokens(statistics = data$aa_summary,
+   aa_plots <- visualize_tokens(statistics = data$aa_summary,
                                  top_n = 30,
                                  output_dir = "output")
 }

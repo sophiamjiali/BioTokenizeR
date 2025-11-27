@@ -15,12 +15,17 @@ License: MIT + file LICENSE
 URL: https://github.com/sophiamjiali/BioTokenizeR
 BugReports: https://github.com/sophiamjiali/BioTokenizeR/issues
 Depends: 
-    R (>= 4.5.1)
+    R (>= 4.5.0)
 Imports:
     Biostrings,
+    scales,
+    ggplot2,
+    tibble,
+    shiny,
+    dplyr,
+    stats,
     S4Vectors
 Suggests:
-    ggplot2,
     testthat (>= 3.0.0),
     knitr,
     rmarkdown
@@ -29,6 +34,9 @@ VignetteBuilder:
 Config/Needs/website: https://cran.r-project.org
 Config/testthat/edition: 3
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+BiocViews:
+    SequenceAnalysis,
+    Bioinformatics,
+    MolecularBiology

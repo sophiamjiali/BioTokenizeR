@@ -113,16 +113,16 @@ annotate_sequences <- function(bioBPE_seqs) {
 #' @family annotation
 #' @keywords annotation internal
 #' 
-#' @importFrom Biostrings letterFrequency
-#' @import S4Vectors
+#' @importFrom Biostrings letterFrequency width
+#' @importFrom S4Vectors mcols
 .BioTokenizeR_annotate_DNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
   steps <- c("length", "gc_content")
   
   # Annotate the Biostrings::XStringSet object for length and GC content
-  mcols(seqs)$length <- width(seqs)
-  mcols(seqs)$gc_content <- rowSums(Biostrings::letterFrequency(
+  S4Vectors::mcols(seqs)$length <- Biostrings::width(seqs)
+  S4Vectors::mcols(seqs)$gc_content <- rowSums(Biostrings::letterFrequency(
     seqs, c('G', 'C'), as.prob = TRUE
   ))
   
@@ -150,15 +150,15 @@ annotate_sequences <- function(bioBPE_seqs) {
 #' @keywords annotation internal
 #' 
 #' @importFrom Biostrings letterFrequency
-#' @import S4Vectors
+#' @importFrom S4Vectors mcols
 .BioTokenizeR_annotate_RNA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
   steps <- c("length", "gc_content")
   
   # Annotate the Biostrings::XStringSet object
-  mcols(seqs)$length <- width(seqs)
-  mcols(seqs)$gc_content <- rowSums(Biostrings::letterFrequency(
+  S4Vectors::mcols(seqs)$length <- Biostrings::width(seqs)
+  S4Vectors::mcols(seqs)$gc_content <- rowSums(Biostrings::letterFrequency(
     seqs, c('G', 'C'), as.prob = TRUE
   ))
   
@@ -188,7 +188,7 @@ annotate_sequences <- function(bioBPE_seqs) {
 #' @keywords annotation internal
 #' 
 #' @importFrom Biostrings letterFrequency
-#' @import S4Vectors
+#' @importFrom S4Vectors mcols
 .BioTokenizeR_annotate_AA <- function(seqs) {
   
   # Define the annotation steps applied as metadata
@@ -196,23 +196,23 @@ annotate_sequences <- function(bioBPE_seqs) {
                    "polar_fraction", "composition_entropy")
   
   # Annotate the Biostrings::XStringSet object
-  mcols(seqs)$length <- width(seqs)
+  S4Vectors::mcols(seqs)$length <- Biostrings::width(seqs)
   
   # Compute amino acid frequencies for hydrophobic, charged, and polar fractions
   aa_counts <- Biostrings::letterFrequency(seqs, Biostrings::AA_STANDARD, 
                                            as.prob = TRUE)
-  mcols(seqs)$hydrophobic_fraction <- rowSums(
+  S4Vectors::mcols(seqs)$hydrophobic_fraction <- rowSums(
     aa_counts[, HYDROPHOBIC, drop = FALSE]
   )
-  mcols(seqs)$charged_fraction <- rowSums(
+  S4Vectors::mcols(seqs)$charged_fraction <- rowSums(
     aa_counts[, c(CHARGED_POS, CHARGED_NEG), drop = FALSE]
   )
-  mcols(seqs)$polar_fraction <- rowSums(
+  S4Vectors::mcols(seqs)$polar_fraction <- rowSums(
     aa_counts[, POLAR, drop = FALSE]
   )
 
   # Compute Composition entropy based on amino acid frequencies
-  mcols(seqs)$composition_entropy <- apply(aa_counts, 1, function(p) {
+  S4Vectors::mcols(seqs)$composition_entropy <- apply(aa_counts, 1, function(p) {
     -sum(ifelse(p > 0, p * log2(p), 0))
   })
   

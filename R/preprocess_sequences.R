@@ -205,12 +205,12 @@ preprocess_sequences <- function(seqs) {
   seqs <- Biostrings::trimLRPatterns(
     Lpattern = "N",
     Rpattern = "N",
-    subject = seqs
+    subject  = seqs
   )
   
   # Remove ambiguous nucleotides: characters not in the canonical set
   canonical <- paste0("[^", paste(CANONICAL_RNA, collapse=""), "]")
-  seqs <- RNAStringSet(gsub(canonical, "", as.character(seqs)))
+  seqs <- Biostrings::RNAStringSet(gsub(canonical, "", as.character(seqs)))
   
   # Drop any empty sequences that may exist
   seqs <- seqs[width(seqs) > 0]
@@ -249,7 +249,7 @@ preprocess_sequences <- function(seqs) {
   
   # Remove ambiguous amino acids: characters not in the canonical set
   canonical <- paste0("[^", paste(CANONICAL_AA, collapse=""), "]")
-  seqs <- AAStringSet(gsub(canonical, "", as.character(seqs)))
+  seqs <- Biostrings::AAStringSet(gsub(canonical, "", as.character(seqs)))
   
   # Drop any empty sequences that may exist
   seqs <- seqs[width(seqs) > 0]

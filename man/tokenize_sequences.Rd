@@ -7,8 +7,8 @@
 tokenize_sequences(bioBPE_seqs, vocab_size = 15)
 }
 \arguments{
-\item{bioBPE_seqs}{A \code{bioBPE_preprocessed} object containing preprocessed D
-NA, RNA, or AA sequences.}
+\item{bioBPE_seqs}{A \code{bioBPE_preprocessed} object containing preprocessed
+DNA, RNA, or AA sequences.}
 
 \item{vocab_size}{An integer specifying the maximum size of the learned BPE
 vocabulary (default is 15).}

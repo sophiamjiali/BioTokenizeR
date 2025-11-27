@@ -24,6 +24,7 @@ normalization and removing invalid characters.
 }
 \seealso{
 Other preprocessing: 
+\code{\link{.BioTokenizeR_compute_bio_score}()},
 \code{\link{.BioTokenizeR_preprocess_DNA}()},
 \code{\link{.BioTokenizeR_preprocess_RNA}()},
 \code{\link{preprocess_sequences}()}

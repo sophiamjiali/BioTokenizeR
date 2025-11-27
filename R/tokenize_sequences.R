@@ -15,8 +15,8 @@
 #' Learns a byte-pair encoding (BPE) vocabulary from preprocessed sequences and
 #' applies it to generate tokenized representations for downstream analysis.
 #'
-#' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed D
-#'    NA, RNA, or AA sequences.
+#' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed 
+#'    DNA, RNA, or AA sequences.
 #' @param vocab_size An integer specifying the maximum size of the learned BPE 
 #'    vocabulary (default is 15).
 #'
@@ -91,12 +91,12 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
   
   # Perform the learned merges to generate tokens from the sequences
   tokens <- .BioTokenizeR_apply_bpe(
-    seqs = as.character(bioBPE_seqs$seqs), 
+    seqs  = as.character(bioBPE_seqs$seqs), 
     vocab = vocab
   )
   
   return (list(
-    vocab = vocab, 
+    vocab  = vocab, 
     tokens = tokens
   ))
 }
@@ -118,6 +118,8 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 #'
 #' @family tokenization
 #' @keywords tokenization internal
+#' 
+#' @importFrom stats setNames
 .BioTokenizeR_apply_bpe <- function(seqs, vocab) {
   
   # Verify that the input was provided appropriately
@@ -129,8 +131,8 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
   
   # Initialize integer sequences using the base token mapping
   base_tokens <- vocab$vocab[1:(length(vocab$vocab) - length(vocab$merges))]
-  token_to_id <- setNames(seq_along(base_tokens), base_tokens)
-  id_to_token <- setNames(base_tokens, seq_along(base_tokens))
+  token_to_id <- stats::setNames(seq_along(base_tokens), base_tokens)
+  id_to_token <- stats::setNames(base_tokens, seq_along(base_tokens))
   
   id_seqs <- lapply(seqs, function(s) token_to_id[strsplit(s, "")[[1]]])
   
@@ -185,14 +187,16 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 #'
 #' @family tokenization
 #' @keywords tokenization internal
+#' 
+#' @importFrom stats setNames
 .BioTokenizeR_learn_bpe_vocabulary <- function(bioBPE_seqs, vocab_size = 15) {
   
   # Initialize sequences as integer token vectors, initializing a mapping
   seqs <- as.character(bioBPE_seqs$seqs)
   vocab <- unique(unlist(strsplit(seqs, "")))
 
-  token_to_id <- setNames(seq_along(vocab), vocab)
-  id_to_token <- setNames(vocab, seq_along(vocab))
+  token_to_id <- stats::setNames(seq_along(vocab), vocab)
+  id_to_token <- stats::setNames(vocab, seq_along(vocab))
   id_seqs <- lapply(seqs, function(s) token_to_id[strsplit(s, "")[[1]]])
   
   # Compute the biological score of each sequence based on their annotations

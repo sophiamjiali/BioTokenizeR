@@ -61,7 +61,7 @@
 #'    rna_plots <- visualize_tokens(statistics = data$rna_summary,
 #'                                  top_n = 30,
 #'                                  output_dir = "output")
-#'    ana_plots <- visualize_tokens(statistics = data$aa_summary,
+#'    aa_plots <- visualize_tokens(statistics = data$aa_summary,
 #'                                  top_n = 30,
 #'                                  output_dir = "output")
 #' }
@@ -74,14 +74,18 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
   # Visualize and save all plots
   plots <- list(
-    frequency_distribution = plot_token_frequency_distribution(
-      statistics = statistics, output_dir = output_dir
+    frequency_distribution = (
+      plot_token_frequency_distribution(statistics = statistics, 
+                                        output_dir = output_dir)
     ),
-    top_tokens             = plot_top_tokens(
-      statistics = statistics, top_n = top_n, output_dir = output_dir
+    top_tokens = (
+      plot_top_tokens(statistics = statistics, 
+                      top_n      = top_n, 
+                      output_dir = output_dir)
     ),
-    cumulative_coverage    = plot_cumulative_coverage(
-      statistics = statistics, output_dir = output_dir
+    cumulative_coverage = (
+      plot_cumulative_coverage(statistics = statistics, 
+                               output_dir = output_dir)
     )
   )
   
@@ -107,6 +111,7 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #' @keywords visualization
 #' 
 #' @import ggplot2
+#' @importFrom tibble tibble
 #' @export
 plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
   
@@ -168,6 +173,8 @@ plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
 #' @keywords visualization
 #' 
 #' @import ggplot2
+#' @importFrom dplyr arrange desc slice_head
+#' @importFrom stats reorder
 #' @export
 plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
@@ -176,13 +183,13 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   if (is.null(token_summary)) stop("'statistics' must include token summary.")
   
   # Extract the top N tokens
-  top_tokens <- token_summary %>% 
-                dplyr::arrange(desc(frequency)) %>%
+  top_tokens <- token_summary |>
+                dplyr::arrange(dplyr::desc(frequency)) |>
                 dplyr::slice_head(n = top_n)
   
   # Plot the top N most frequent tokens as a bar plot
   bar_plot <- ggplot2::ggplot(top_tokens, 
-                              ggplot2::aes(x = reorder(token, frequency), 
+                              ggplot2::aes(x = stats::reorder(token, frequency), 
                                           y = frequency)) +
     ggplot2::geom_bar(
       stat      = "identity", 
@@ -235,6 +242,7 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #' @keywords visualization plotting tokenization
 #'
 #' @import ggplot2
+#' @importFrom dplyr arrange desc mutate
 #' @export
 plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
   
@@ -243,8 +251,8 @@ plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
   if (is.null(token_summary)) stop("'statistics' must include token summary.")
   
   # Compute the cumulative coverage of each token
-  token_summary <- token_summary %>% 
-                   dplyr::arrange(desc(frequency)) %>%
+  token_summary <- token_summary |>
+                   dplyr::arrange(dplyr::desc(frequency)) |>
                    dplyr::mutate(cumulative = cumsum(frequency) / sum(frequency))
   
   # Plot the cumulative coverage of each frequency

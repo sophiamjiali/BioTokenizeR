@@ -64,6 +64,7 @@ operations are delegated to internal helper functions:
 }
 \seealso{
 Other preprocessing: 
+\code{\link{.BioTokenizeR_compute_bio_score}()},
 \code{\link{.BioTokenizeR_preprocess_AA}()},
 \code{\link{.BioTokenizeR_preprocess_DNA}()},
 \code{\link{.BioTokenizeR_preprocess_RNA}()}

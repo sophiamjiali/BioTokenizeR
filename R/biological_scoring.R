@@ -23,6 +23,22 @@ BIO_SCORE_WEIGHTS = list(
 
 # =====| Biological Score |=====================================================
 
+#' Compute Biological Score for BPE Tokenization
+#'
+#' Computes a biological score from the provided annotations as input into 
+#' biology-aware BPE tokenization.
+#'
+#' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed 
+#'    DNA, RNA, or AA sequences.
+#'
+#' @return A numeric vector of biology scores per sequence sorted in the same
+#'    order as `bioBPE_seqs`.
+#'
+#' @family preprocessing
+#' @keywords preprocessing internal
+#' 
+#' @importFrom S4Vectors mcols
+#' @importFrom scales rescale
 .BioTokenizeR_compute_bio_score <- function(bioBPE_seqs) {
   
   # Compute bio-score based on what annotations are available
@@ -37,7 +53,7 @@ BIO_SCORE_WEIGHTS = list(
   
   # Compute a matrix of bio-scores for each sequence
   scores <- lapply(bioBPE_seqs$annot_steps, 
-    function(a) scoring_funcs[[a]](mcols(bioBPE_seqs$seqs))
+    function(a) scoring_funcs[[a]](S4Vectors::mcols(bioBPE_seqs$seqs))
   )
   scores <- as.matrix(do.call(cbind, scores))
   colnames(scores) <- bioBPE_seqs$annot_steps

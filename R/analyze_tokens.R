@@ -50,6 +50,7 @@
 #' @family summary
 #' @keywords summary
 #' 
+#' @importFrom stats median
 #' @export
 summarize_tokens <- function(tokens) {
   
@@ -70,7 +71,7 @@ summarize_tokens <- function(tokens) {
   num_sequences <- length(tokens)
   total_tokens <- length(all_tokens)
   avg_seq_length <- mean(lengths(tokens))
-  median_seq_length <- median(lengths(tokens))
+  median_seq_length <- stats::median(lengths(tokens))
   
   # Compute token-level frequency summary
   token_freq <- sort(table(all_tokens), decreasing = TRUE)
