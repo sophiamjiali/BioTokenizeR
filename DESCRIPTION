@@ -23,6 +23,7 @@ Imports:
     tibble,
     shiny,
     dplyr,
+    bslib,
     stats,
     S4Vectors
 Suggests:
