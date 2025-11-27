@@ -10,8 +10,10 @@ library(shiny)
 library(bslib)
 library(Biostrings)
 
+# =====| User Interface |=======================================================
+
 # # Define the User Interface (UI)
-ui <- fluidPage(
+ui <- page_fluid(
 
   # Theme of the UI
   theme = bs_theme(version = 5, bootswatch = "flatly"),
@@ -19,130 +21,167 @@ ui <- fluidPage(
   # Title of main page
   titlePanel("BioTokenizeR: NLP-style Tokenization Explorer"),
 
+  # Define the main navigation as tabs per step in the pipeline
   bslib::navset_card_tab(
-  
-    # -----| Home Tab |-----
-    bslib::nav_panel("Home", div(
-      class = "card",
-      tags$h3("Tokenization Explorer"),
-      tags$p(paste0("This Shiny App demonstrates the tokenization workflow. ",
-                    "Upload a FASTA file to run the pipeline step-by-step and ",
-                    "Inspect intermediate outputs.")),
-      tags$ul(
-        tags$li("Input & Preprocessing: upload sequences and run preprocessing."),
-        tags$li("Annotation: add biological annotations to preprocessed sequences."),
-        tags$li("Tokenization: run biology-aware tokenization and inspect tokens."),
-        tags$li("Analysis & Visualization: token summaries and exploration.")
-      ), tags$p("Expected input format: FASTA file.")
+    
+    # -----| Overview: default landing page |-----------------------------------
+    bslib::nav_panel(title = "Overview", bslib::card(
+      
+      # Main title description
+      shiny::tags$h3(paste0("Welcome to BioTokenizeR: NLP-style Biology-Aware ",
+                            "Tokenization")),
+      shiny::tags$p(paste0("This application demonstrates the BioTokenizeR ",
+                           "workflow for processing biological sequences using ",
+                           "NLP-style tokenization that incorporates ",
+                           "biological annotations.")),
+      shiny::tags$hr(),
+      
+      # Workflow description
+      shiny::tags$h4("Workflow"),
+      shiny::tags$ul(
+        shiny::tags$li(paste0("Input: upload a FASTA file (DNA, RNA, AA) and ",
+                              "indicate sequence type")),
+        shiny::tags$li(paste0("Preprocessing: run preprocessing and ",
+                              "annotation")),
+        shiny::tags$li(paste0("Tokenization: tokenize sequences using a ", 
+                              "biology-aware BPE algorithm")),
+        shiny::tags$li(paste0("Analysis: inspect token statistics and ",
+                              "summaries")),
+        shiny::tags$li(paste0("Visualize: inspect token visualizations"))
+      ),
+      
+      # Input and output descriptions
+      shiny::tags$h4("Input Requirements"),
+      shiny::tags$ul(
+        shiny::tags$li("Valid FASTA file (.fa or .fasta)"),
+        shiny::tags$li("All sequences must be of the same type (DNA, RNA, AA)"),
+        shiny::tags$li("Sequence type must match what is provided in the FASTA")
+      ),
+      shiny::tags$h4("Output"),
+      shiny::tags$ul(
+        shiny::tags$li("Tokenized sequences"),
+        shiny::tags$li("Token frequency summaries"),
+        shiny::tags$li("Visualization of token distributions")
+      )
+    )),
+    
+    # -----| Upload: upload FASTA files |---------------------------------------
+    bslib::nav_panel("Upload Sequences", shiny::fluidRow(
+      
+      # Upload, preprocess, and annotate sidebar
+      shiny::column(width = 3,
+        shiny::tags$h4("Upload Sequences"),
+        shiny::hr(),
+        shiny::tags$p(paste0("Upload biological sequences for downstream ",
+                             "tokenization and analysis.")),
+        shiny::fileInput(inputId    = "fasta_file", 
+                         label      = "Upload FASTA sequence(s) file",
+                         accept     = c(".fa", ".fasta")),
+        shiny::selectInput(inputId  = "sequence_type",
+                           label    = "Select sequence type:",
+                           choices  = c("DNA", "RNA", "AA"),
+                           selected = "DNA"),
+        shiny::actionButton(inputId = "run_preprocess", 
+                            label   = "Preprocess Sequences")),
+      
+      shiny::column(width = 1),
+      
+      # Download sample data
+      shiny::column(width = 7,
+        shiny::tags$h3("Upload Sequences for Preprocessing"),
+        shiny::hr(),
+        shiny::br(),
+        shiny::uiOutput("upload_message"),
+        shiny::br(),
+        shiny::hr(),
+        shiny::tags$h4("Sample Data"),
+        shiny::tags$p(paste0("Sample data of DNA, RNA, and AA sequences are ", 
+                             "included in the package. Indicate below whether ",
+                             "or not to use the example data for testing.")),
+        shiny::selectInput(inputId = "use_sample_data",
+                           label   = "Select Sample Data",
+                           placeholder = "Do Not Use Sample Data")
+        
+        
+        
+        shiny::tags$p(paste0("Sample data for DNA, RNA, and AA sequences are ",
+                             "included in the package under 'inst/extdata/.")),
+        shiny::tags$p(paste0("Users can also access the raw files on GitHub at",
+                             ": 'https://github/com/sophiamjiali/BioTokenizeR",
+                             "/tree/main/inst/extdata")),
+        
+        
+
+        shiny::downloadButton(outputId = "download_dna", 
+                              label    = "Download Sample DNA FASTA File",
+                              style    = "margin-bottom: 10px;"),
+        shiny::downloadButton(outputId = "download_rna", 
+                              label    = "Download Sample RNA FASTA File",
+                              style    = "margin-bottom: 10px;"),
+        shiny::downloadButton(outputId = "download_aa", 
+                              label    = "Download Sample AA FASTA File",
+                              style    = "margin-bottom: 10px;"),
+        shiny::hr())
+    )),
+        
+    
+    # -----| Token Summary: displays summary statistics |-----------------------
+    bslib::nav_panel("Token Summary", shiny::fluidRow(
+      
+      # Run tokenization sidebar
+      shiny::column(width = 3,
+        shiny::tags$h4("Tokenize Sequences"),
+        shiny::hr(),
+        shiny::tags$p(paste0("Tokenization can be performed after sequences are",
+                             " uploaded, preprocessed, and annotated.")),
+        shiny::br(),
+        shiny::numericInput(inputId = "vocab_size",
+                            label   = "Enter Vocabulary Size",
+                            value   = 10,
+                            min     = 4),
+        shiny::br(),
+        shiny::actionButton(inputId = "run_tokenize",
+                            label   = "Run BPE Tokenization")),
+      
+      shiny::column(width = 1),
+      
+      # Token analysis UI
+      shiny::column(width = 7,
+        shiny::tags$h3("Tokenization Result Summary"),
+        shiny::hr(),
+        shiny::uiOutput("token_summary_ui"))
+    )),
+    
+    # -----| Visualizations: key visuals of the pipeline |----------------------
+    bslib::nav_panel("Visualizations", shiny::fluidRow(
+      
+      # Run visualization sidebar
+      shiny::column(width = 3,
+        shiny::tags$h4("Visualize Results"),
+        shiny::hr(),
+        shiny::tags$p(paste0("Tokenization statistics can be visualized after ",
+                             "sequences are tokenized and summarized.")),
+        shiny::br(),
+        shiny::numericInput(inputId  = "top_n",
+                            label    = "Enter the Top Number of Tokens",
+                            value    = 10,
+                            min      = 4),
+        shiny::textInput(inputId     = "output_dir",
+                         label       = "Enter an output directory to save plots",
+                         placeholder = "Leave blank if not saving."),
+        shiny::br(),
+        shiny::actionButton(inputId  = "run_visual",
+                            label    = "Generate Visualizations")),
+      
+      shiny::column(width = 1),
+      
+      # Visualization UI
+      shiny::column(width = 7,
+        shiny::tags$h3("Tokenization Result Visualization"),
+        shiny::hr(),
+        shiny::uiOutput("token_visual_ui"))
     ))
-  )
-)
-
-# =====| User Interface |=======================================================
-
-# # Define the User Interface (UI)
-# ui <- fluidPage(
-# 
-#   # Theme of the UI
-#   theme = bs_theme(version = 5, bootswatch = "flatly"),
-# 
-#   # Title of main page
-#   titlePanel("BioTokenizeR: NLP-style Tokenization Explorer"),
-# 
-#   bslib::navset_card_tab(
-#   
-#     # -----| Home Tab |-----
-#     bslib::nav_panel("Home", div(
-#       class = "card",
-#       tags$h3("Tokenization Explorer"),
-#       tags$p(paste0("This Shiny App demonstrates the tokenization workflow. ",
-#                     "Upload a FASTA file to run the pipeline step-by-sep and ",
-#                     "Inspect intermediate outputs.")),
-#       tags$ul(
-#         tags$li("Input & Preprocessing: upload sequences and run preprocessing."),
-#         tags$li("Annotation: add biological annotations to preprocessed sequences."),
-#         tags$li("Tokenization: run biology-aware tokenization and inspect tokens."),
-#         tags$li("Analysis & Visualization: token summaries and exploration.")
-#       ), tags$p("Expected input format: FASTA file.")
-#     )),
-#   
-#     # -----| Upload Tab |-----
-#     bslib::nav_panel("Upload", bslib::page_sidebar(bslib::sidebar("Input",
-#   
-#         # User-provided FASTA File
-#         shiny::fileInput(inputId = "fasta_file",
-#                          label   = "Upload a FASTA file (.fa, .fasta)",
-#                          accept  = c(".fa", ".fasta")),
-#   
-#         # User-provided sequence type
-#         shiny::selectInput(inputId  = "sequence_type",
-#                            label    = "Select sequence type:",
-#                            choices  = c("DNA", "RNA", "AA"),
-#                            selected = "DNA"),
-#   
-#         shiny::actionButton(inputId = "load_seqs",
-#                             label   = "Load Sequences")
-#       ), bslib::card("Sequence Preview", verbatimTextOutput("seq_preview"))
-#     )),
-#   
-#     # -----| Preprocessing Tab |-----
-#     bslib::nav_panel("Preprocess", bslib::page_sidebar(bslib::sidebar("Parameters",
-#         shiny::actionButton(inputId = "run_preprocess",
-#                             label   = "Run Preprocessing")
-#       ), bslib::card("Output", verbatimTextOutput("preprocess_out"))
-#     )),
-#   
-#     # -----| Annotation Tab |-----
-#     bslib::nav_panel("Annotate", bslib::page_sidebar(bslib::sidebar("Parameters",
-#         shiny::actionButton(inputId = "run_annotate",
-#                             label   = "Run Annotation")
-#       ), bslib::card("Output", verbatimTextOutput("annotate_out"))
-#     )),
-#   
-#     # -----| Tokenization Tab |-----
-#     bslib::nav_panel("Tokenize", bslib::page_sidebar(bslib::sidebar("Parameters",
-#   
-#         # User-provided vocabulary size for NLP-stype tokenization
-#         shiny::numericInput(inputId = "vocab_size",
-#                             label   = "Enter vocabulary size:",
-#                             value   = 10,
-#                             min     = 4),
-#   
-#         shiny::actionButton(inputId = "run_tokenize",
-#                             label   = "Run Tokenization")
-#       ), bslib::card("Tokens", verbatimTextOutput("token_out"))
-#     )),
-#   
-#     # -----| Analysis Tab |-----
-#     bslib::nav_panel("Analyze", bslib::page_sidebar(bslib::sidebar("Parameters",
-#         shiny::actionButton(inputId = "run_analysis",
-#                             label   = "Run Analysis")
-#       ), bslib::card("Analysis Summary", verbatimTextOutput("analysis_out"))
-#     )),
-#   
-#     # -----| Visualization Tab |-----
-#     bslib::nav_panel("Visualize", bslib::page_sidebar(bslib::sidebar("Parameters",
-#   
-#         # User-provided number of tokens to visualize
-#         shiny::numericInput(inputId  = "top_n",
-#                             label    = "Enter the number of top tokens to visualize:",
-#                             value    = 30,
-#                             min      = 1),
-#   
-#         # (Optional) User-provided output directory to save plots
-#         shiny::textInput(inputId     = "output_dir",
-#                          label       = "Optional: enter an output directory to save plots:",
-#                          placeholder = "Leave blank if not saving."),
-#   
-#         shiny::actionButton(inputId  = "run_visual",
-#                             label    = "Generate Visualizations")
-#       ), body = tagList(
-#         bslib::card("Token Frequency Distribution", plotOutput("plot_freq_dist")),
-#         bslib::card("Top Tokens", plotOutput("plot_top_tokens")),
-#         bslib::card("Cumulative Coverage", plotOutput("plot_cum_cov"))
-#     )))
-#   )
-# )
+))
 
 
 # =====| Server |===============================================================
@@ -151,11 +190,118 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   # Initialize reactive storage for intermediates
-  sequences    <- shiny::reactiveVal(NULL)
-  preprocessed <- shiny::reactiveVal(NULL)
-  annotated    <- shiny::reactiveVal(NULL)
-  tokens       <- shiny::reactiveVal(NULL)
-  analyzed     <- shiny::reactiveVal(NULL)
+  sequences <- shiny::reactiveVal(NULL)
+  processed <- shiny::reactiveVal(NULL)
+  tokens    <- shiny::reactiveVal(NULL)
+  analyzed  <- shiny::reactiveVal(NULL)
+  
+  # -----| Download Sample Data |-----------------------------------------------
+  output$download_dna <- shiny::downloadHandler(
+    filename = ""
+  )
+  
+  # -----| Upload, Preprocess, and Annotate |-----------------------------------
+  shiny::observeEvent(input$run_preprocess, {
+    req(input$fasta_file)
+    req(input$sequence_type)
+
+    # Load the FASTA into its corresponding Biostrings::XStringSet object
+    tryCatch({
+      seqs <- switch(input$sequence_type,
+         "DNA" = Biostrings::readDNAStringSet(input$fasta_file$datapath),
+         "RNA" = Biostrings::readRNAStringSet(input$fasta_file$datapath),
+         "AA"  = Biostrings::readAAStringSet(input$fasta_file$datapath)
+      )
+
+      # Place the loaded sequences into reactive storage
+      sequences(seqs)
+
+    }, error = function(e) {
+      shiny::showNotification(paste0("Failed to read FASTA. Ensure it is a ",
+                                     "valid and matches the selected type."),
+                              type = "error")
+    })
+
+    # Preprocess and annotate the loaded data and place into reactive storage
+    preproc <- BioTokenizeR::preprocess_sequences(seqs = sequences())
+    annot <- BioTokenizeR::annotate_sequences(bioBPE_seqs = preproc)
+    processed(annot)
+  })
+
+  
+  output$upload_message <- renderUI({
+
+    # Show placeholder if sequences have not been uploaded and processed yet
+    if (is.null(processed())) {
+      shiny::tagList(
+        shiny::tags$h4("Sequences have not been processed yet."),
+        shiny::tags$p(paste0("Upload a FASTA file and click 'Preprocess and ",
+                             "Annotate Data'."))
+      )
+
+    # Display success message once uploaded, preprocessed, and annotated
+    } else {
+      shiny::tagList(
+        shiny::tags$h4("Sequences have been successfully processed and annotated."),
+        shiny::tags$p(paste0("Continue to the 'Token Summary' tab to tokenize ",
+                             "the sequences."))
+      )
+    }
+  })
+  
+  
+  # -----| Tokenize and Analyze Sequences |-------------------------------------
+  output$token_summary_ui <- shiny::renderUI(
+    
+    # Show placeholder if tokenization is not run yet
+    if (is.null(tokens())) {
+      shiny::tagList(
+        shiny::br(),
+        shiny::hr(),
+        shiny::tags$h4("There are no tokens to summarize yet."),
+        shiny::tags$p(paste0("Tokenization has not yet been run. Please ",
+                             "upload and preprocess sequences using the ",
+                             "'Upload Sequences' tab and click 'Run ",
+                             "Tokenization' to view results.")),
+        shiny::hr())
+      
+    # Display tokenization summary statistics once pipeline is run
+    } else {
+      
+    }
+  )
+  
+  # -----| Visualize Tokens |---------------------------------------------------
+  output$token_visual_ui <- shiny::renderUI(
+    
+    # Show placeholder if tokenization is not run yet
+    if (is.null(tokens())) {
+      shiny::tagList(
+        shiny::br(),
+        shiny::hr(),
+        shiny::tags$h4("There are no token statistics to visualize yet."),
+        shiny::tags$p(paste0("Token summarization has not yet been run.", 
+                             "Please tokenize sequences using the 'Token ",
+                             "Summary' tab and click 'Generate Visualizations'",
+                             "to view results.")),
+        shiny::hr())
+      
+      # Display tokenization summary statistics once pipeline is run
+    } else {
+      
+  })
+}
+  
+  
+  
+
+
+
+
+
+
+
+# ==============================================================================
 
   # # -----| Load the FASTA input sequences |-----
   # shiny::observeEvent(input$load_seqs, {
@@ -241,7 +387,7 @@ server <- function(input, output) {
   #   output$plot_cum_cov    <- shiny::renderPlot({plots$cumulative_coverage})
   # })
   
-}
+
 
 shiny::shinyApp(ui, server)
 # [END]

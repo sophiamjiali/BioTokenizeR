@@ -16,9 +16,8 @@
 #'     BioTokenizeR::run_BioTokenizeR()
 #' }
 #' 
-#' @export
 #' @importFrom shiny runApp
-#' 
+#' @export
 run_BioTokenizeR <- function() {
   app_location <- system.file("shiny-scripts", package = "BioTokenizeR")
   action_shiny <- shiny::runApp(app_location, display.mode = "normal")
