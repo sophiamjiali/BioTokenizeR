@@ -121,3 +121,5 @@ test_that("preprocess_sequences: correctly preprocess multiple sequences", {
   testthat::expect_equal(data$rna_preproc$preproc_steps, RNA_PREPROC_STEPS)
   testthat::expect_equal(data$aa_preproc$preproc_steps, AA_PREPROC_STEPS)
 })
+
+# [END]

@@ -33,40 +33,53 @@ ui <- page_fluid(
       shiny::tags$p(paste0("This application demonstrates the BioTokenizeR ",
                            "workflow for processing biological sequences using ",
                            "NLP-style tokenization that incorporates ",
-                           "biological annotations.")),
+                           "biological annotations. Through biology-aware byte-",
+                           "pair encoding (BPE), biology-aware tokens can be ",
+                           "generated for more informative downstream analysis",
+                           " of biological sequences.")),
       shiny::tags$hr(),
       
-      # Workflow description
-      shiny::tags$h4("Workflow"),
-      shiny::tags$ul(
-        shiny::tags$li(paste0("Input: upload a FASTA file (DNA, RNA, AA) and ",
-                              "indicate sequence type")),
-        shiny::tags$li(paste0("Preprocessing: run preprocessing and ",
-                              "annotation")),
-        shiny::tags$li(paste0("Tokenization: tokenize sequences using a ", 
-                              "biology-aware BPE algorithm")),
-        shiny::tags$li(paste0("Analysis: inspect token statistics and ",
-                              "summaries")),
-        shiny::tags$li(paste0("Visualize: inspect token visualizations"))
-      ),
+      # Getting started and Workflow description
+      shiny::fluidRow(
+        shiny::column(width = 6,
+          shiny::tags$h4("Getting Started"),
+          shiny::tags$p(paste0("To commence the tokenization workflow, first ",
+                               "navigate to the 'Upload Sequences' tab to input ",
+                               "sequences for tokenization or use the provided ",
+                               "sample data.")),
+          shiny::tags$h4("The BioTokenizeR Workflow"),
+          shiny::tags$p("The tokenization workflow consists of the following steps:"),
+          shiny::tags$ul(
+            shiny::tags$li(paste0("Input: upload sequences and indicate type")),
+            shiny::tags$li(paste0("Preprocessing: standardize and annotate sequences")),
+            shiny::tags$li(paste0("Tokenization: tokenize sequences using the ",
+                                  "BPE algorithm")),
+            shiny::tags$li(paste0("Analysis: inspect token statistics and ",
+                                  "summaries")),
+            shiny::tags$li(paste0("Visualize: inspect token visualizations")))),
+        shiny::column(width = 6,
+          shiny::tags$h4("Input Requirements"),
+          shiny::tags$ul(
+            shiny::tags$li("Valid FASTA file (.fa or .fasta)"),
+            shiny::tags$li("FASTA contains header line(s) denoted by '>'"),
+            shiny::tags$li("All sequences must be of the same type (DNA, RNA, AA)"),
+            shiny::tags$li("Sequence type must match what is provided in the FASTA")),
+          shiny::tags$h4("Expected Output"),
+          shiny::tags$ul(
+            shiny::tags$li("Tokenized sequences"),
+            shiny::tags$li("Token frequency summaries"),
+            shiny::tags$li("Visualization of token distributions")))),
       
-      # Input and output descriptions
-      shiny::tags$h4("Input Requirements"),
-      shiny::tags$ul(
-        shiny::tags$li("Valid FASTA file (.fa or .fasta)"),
-        shiny::tags$li("All sequences must be of the same type (DNA, RNA, AA)"),
-        shiny::tags$li("Sequence type must match what is provided in the FASTA")
-      ),
-      shiny::tags$h4("Output"),
-      shiny::tags$ul(
-        shiny::tags$li("Tokenized sequences"),
-        shiny::tags$li("Token frequency summaries"),
-        shiny::tags$li("Visualization of token distributions")
-      )
+      # Contact Support
+      shiny::tags$hr(),
+      shiny::tags$h4("Contact Support"),
+      shiny::tags$p(paste0("For more information regarding BioTokenizeR, please ",
+                           "refer to the GitHub: https://github.com/sophiamjiali",
+                           "/BioTokenizeR."))
     )),
     
     # -----| Upload: upload FASTA files |---------------------------------------
-    bslib::nav_panel("Upload Sequences", shiny::fluidRow(
+    bslib::nav_panel(title = "Upload Sequences", shiny::fluidRow(
       
       # Upload, preprocess, and annotate sidebar
       shiny::column(width = 4,
@@ -137,7 +150,7 @@ ui <- page_fluid(
         
     
     # -----| Token Summary: displays summary statistics |-----------------------
-    bslib::nav_panel("Token Summary", shiny::fluidRow(
+    bslib::nav_panel(title = "Token Summary", shiny::fluidRow(
       
       # Run tokenization sidebar
       shiny::column(width = 3,
@@ -164,7 +177,7 @@ ui <- page_fluid(
     )),
     
     # -----| Visualizations: key visuals of the pipeline |----------------------
-    bslib::nav_panel("Visualizations", shiny::fluidRow(
+    bslib::nav_panel(title = "Visualizations", shiny::fluidRow(
       
       # Run visualization sidebar
       shiny::column(width = 3,
@@ -445,4 +458,5 @@ server <- function(input, output) {
 }
 
 shiny::shinyApp(ui, server)
+
 # [END]

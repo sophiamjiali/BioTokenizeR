@@ -107,3 +107,5 @@ test_that("summarize_tokens: correctly summarizes multiple sequences", {
   testthat::expect_named(data$rna_summary$token_summary, TOKEN_SUMMARY_COLUMNS)
   testthat::expect_named(data$aa_summary$token_summary, TOKEN_SUMMARY_COLUMNS)
 })
+
+# [END]

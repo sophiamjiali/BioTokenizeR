@@ -51,3 +51,5 @@ rsconnect/
 # Devnotes
 devnotes.Rmd
 inst/doc
+/doc/
+/Meta/

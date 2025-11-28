@@ -129,3 +129,5 @@ test_that("annotate_sequences: correctly annotates multiple sequences", {
   testthat::expect_equal(data$rna_annot$annot_steps, RNA_ANNOT_STEPS)
   testthat::expect_equal(data$aa_annot$annot_steps, AA_ANNOT_STEPS)
 })
+
+# [END]

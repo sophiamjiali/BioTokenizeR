@@ -255,3 +255,5 @@ test_that("tokenize_sequences: correctly tokenizes with high vocabulary size", {
   testthat::expect_true(all(rna_letters %in% Biostrings::RNA_ALPHABET))
   testthat::expect_true(all(aa_letters %in% Biostrings::AA_ALPHABET))
 })
+
+# [END]
