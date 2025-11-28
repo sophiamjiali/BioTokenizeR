@@ -256,3 +256,5 @@ preprocess_sequences <- function(seqs) {
   
   return (list(seqs = seqs, steps = steps))
 }
+
+# [END]

@@ -277,3 +277,5 @@ generate_sequences <- function(type = NULL, n = 1, length = 21) {
   
   return (seqs)
 }
+
+# [END]

@@ -106,3 +106,5 @@ summarize_tokens <- function(tokens) {
   
   return (statistics)
 }
+
+# [END]

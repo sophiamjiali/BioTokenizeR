@@ -100,3 +100,5 @@ BIO_SCORE_WEIGHTS = list(
   score <- as.numeric(.BioTokenizeR_normalize(ann$composition_entropy))
   return (score)
 }
+
+# [END]

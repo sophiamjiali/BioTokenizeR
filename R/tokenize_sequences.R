@@ -353,3 +353,5 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
   
   return (merged_seqs)
 }
+
+# [END]

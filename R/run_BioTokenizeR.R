@@ -23,4 +23,5 @@ run_BioTokenizeR <- function() {
   action_shiny <- shiny::runApp(app_location, display.mode = "normal")
   return (action_shiny)
 }
+
 # [END]

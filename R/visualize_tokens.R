@@ -57,13 +57,13 @@
 #'    # Visualize the tokenized sequences
 #'    dna_plots <- visualize_tokens(statistics = data$dna_summary,
 #'                                  top_n = 30,
-#'                                  output_dir = "output")
+#'                                  output_dir = NULL)
 #'    rna_plots <- visualize_tokens(statistics = data$rna_summary,
 #'                                  top_n = 30,
-#'                                  output_dir = "output")
+#'                                  output_dir = NULL)
 #'    aa_plots <- visualize_tokens(statistics = data$aa_summary,
 #'                                  top_n = 30,
-#'                                  output_dir = "output")
+#'                                  output_dir = NULL)
 #' }
 #'
 #' @family visualization
@@ -106,6 +106,25 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #'
 #' @return A `ggplot2` object representing the rank-frequency distribution
 #'    of tokens.
+#'    
+#' @examples
+#' \dontrun{
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = TRUE,
+#'        annotate   = TRUE,
+#'        tokenize   = TRUE,
+#'        summarize  = TRUE,
+#'        verbose    = FALSE
+#'    )
+#'    
+#'    # Visualize token frequency distribution
+#'    plot <- plot_token_frequency_distribution(statistics = data$dna_summary,
+#'                                              output_dir = NULL)
+#' }
 #'
 #' @family visualization
 #' @keywords visualization
@@ -168,6 +187,26 @@ plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
 #'    is returned but not saved.
 #'
 #' @return A `ggplot2` object representing the top `N` most frequent tokens.
+#' 
+#' @examples
+#' \dontrun{
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = TRUE,
+#'        annotate   = TRUE,
+#'        tokenize   = TRUE,
+#'        summarize  = TRUE,
+#'        verbose    = FALSE
+#'    )
+#'    
+#'    # Visualize the top 10 tokens
+#'    plot <- plot_top_tokens(statistics = data$dna_summary,
+#'                            top_n      = 10,
+#'                            output_dir = NULL)
+#' }
 #'
 #' @family visualization
 #' @keywords visualization
@@ -237,6 +276,25 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #'    is returned but not saved.
 #'
 #' @return A `ggplot2` object representing cumulative token frequency coverage.
+#' 
+#' @examples
+#' \dontrun{
+#'    # Generate simulated data
+#'    data <- generate_data(
+#'        n          = 3, 
+#'        length     = 1000, 
+#'        vocab_size = 25, 
+#'        preprocess = TRUE,
+#'        annotate   = TRUE,
+#'        tokenize   = TRUE,
+#'        summarize  = TRUE,
+#'        verbose    = FALSE
+#'    )
+#'    
+#'    # Visualize the cumulative coverage of all tokens
+#'    plot <- plot_cumulative_coverage(statistics = data$dna_summary,
+#'                                     output_dir = NULL)
+#' }
 #'
 #' @family visualization
 #' @keywords visualization plotting tokenization
@@ -284,3 +342,5 @@ plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
   
   return (line_plot)
 }
+
+# [END]
