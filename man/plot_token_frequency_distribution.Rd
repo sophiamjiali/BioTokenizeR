@@ -21,6 +21,26 @@ of tokens.
 Creates a log-log plot of token frequency versus rank, providing a
 visual overview of token distribution across the corpus.
 }
+\examples{
+\dontrun{
+   # Generate simulated data
+   data <- generate_data(
+       n          = 3, 
+       length     = 1000, 
+       vocab_size = 25, 
+       preprocess = TRUE,
+       annotate   = TRUE,
+       tokenize   = TRUE,
+       summarize  = TRUE,
+       verbose    = FALSE
+   )
+   
+   # Visualize token frequency distribution
+   plot <- plot_token_frequency_distribution(statistics = data$dna_summary,
+                                             output_dir = NULL)
+}
+
+}
 \seealso{
 Other visualization: 
 \code{\link{plot_cumulative_coverage}()},

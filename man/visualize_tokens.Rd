@@ -57,13 +57,13 @@ across token ranks
    # Visualize the tokenized sequences
    dna_plots <- visualize_tokens(statistics = data$dna_summary,
                                  top_n = 30,
-                                 output_dir = "output")
+                                 output_dir = NULL)
    rna_plots <- visualize_tokens(statistics = data$rna_summary,
                                  top_n = 30,
-                                 output_dir = "output")
+                                 output_dir = NULL)
    aa_plots <- visualize_tokens(statistics = data$aa_summary,
                                  top_n = 30,
-                                 output_dir = "output")
+                                 output_dir = NULL)
 }
 
 }

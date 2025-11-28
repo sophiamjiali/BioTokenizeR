@@ -20,6 +20,26 @@ A \code{ggplot2} object representing cumulative token frequency coverage.
 Generates a line plot showing the cumulative frequency coverage of tokens
 in the tokenized sequences, ranked from most to least frequent.
 }
+\examples{
+\dontrun{
+   # Generate simulated data
+   data <- generate_data(
+       n          = 3, 
+       length     = 1000, 
+       vocab_size = 25, 
+       preprocess = TRUE,
+       annotate   = TRUE,
+       tokenize   = TRUE,
+       summarize  = TRUE,
+       verbose    = FALSE
+   )
+   
+   # Visualize the cumulative coverage of all tokens
+   plot <- plot_cumulative_coverage(statistics = data$dna_summary,
+                                    output_dir = NULL)
+}
+
+}
 \seealso{
 Other visualization: 
 \code{\link{plot_token_frequency_distribution}()},

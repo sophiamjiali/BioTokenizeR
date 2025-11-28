@@ -22,6 +22,27 @@ A \code{ggplot2} object representing the top \code{N} most frequent tokens.
 Generates a horizontal bar plot showing the top \code{N} most frequent tokens
 in the tokenized sequences.
 }
+\examples{
+\dontrun{
+   # Generate simulated data
+   data <- generate_data(
+       n          = 3, 
+       length     = 1000, 
+       vocab_size = 25, 
+       preprocess = TRUE,
+       annotate   = TRUE,
+       tokenize   = TRUE,
+       summarize  = TRUE,
+       verbose    = FALSE
+   )
+   
+   # Visualize the top 10 tokens
+   plot <- plot_top_tokens(statistics = data$dna_summary,
+                           top_n      = 10,
+                           output_dir = NULL)
+}
+
+}
 \seealso{
 Other visualization: 
 \code{\link{plot_cumulative_coverage}()},
