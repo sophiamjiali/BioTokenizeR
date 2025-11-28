@@ -174,7 +174,7 @@ documentation was formatted correctly.
   Rare Words with Subword Units. Proceedings of the 54th Annual Meeting
   of the Association for Computational Linguistics. Association for
   Computational Linguistics, 1715–1725.
-  <https://aclanthology.org/P16-1162>
+  <https://aclanthology.org/P16-1162>.
 
 - Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.
   Springer-Verlag New York. ISBN 978-3-319-24277-4,
