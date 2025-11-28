@@ -1,0 +1,14 @@
+citHeader("To cite BioTokenizeR in publications use:")
+
+citEntry(entry = "Unpublished",
+  title        = "BioTokenizeR: Biology-aware Byte-pair Encoding (BPE) Tokenizer
+  for biological sequences",
+  author       = "Sophia Li",
+  note         = "Unpublished",
+  year         = "2025",
+
+  textVersion  =
+  paste("Li, S. (2025) BioTokenizeR: Biology-aware Byte-pair Encoding (BPE) 
+         Tokenizer for biological sequences. Unpublished. URL 
+         https://github.com/sophiamjiali/BioTokenizeR.")
+)

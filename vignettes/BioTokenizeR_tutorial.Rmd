@@ -4,8 +4,11 @@ author: "Sophia Li"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{BioTokenizeR_tutorial}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, include = FALSE}
@@ -15,127 +18,268 @@ knitr::opts_chunk$set(
 )
 options(repos = c(CRAN = "https://cran.r-project.org"))
 
-# Attach packages
+# Set seed for reproducibility
+set.seed(42)
+
+# Attach package
 library(BioTokenizeR)
 ```
 
 ## Introduction
 
-`BioTokenizeR` is an R package for tokenizing biological sequences (DNA, RNA, 
-AA), providing tools for generating, analyzing, and visualizing tokens through 
-biology-aware byte-pair encoding (BPE).
+`BioTokenizeR` is an R package for tokenizing biological sequences (DNA,
+RNA, AA), providing tools for generating, analyzing, and visualizing
+tokens through biology-aware byte-pair encoding (BPE).
 
-To install and attach `BioTokenizeR` to a work session, run the following 
-commands in an R console.
-```{r, }
-# install.packages("devtools")
-# library("devtools")
-# devtools::install_github("sophiamjiali/BioTokenizeR", build_vignettes = TRUE)
+To install and attach `BioTokenizeR` to a work session, run the
+following commands in an R console.
+
+```{r, eval = FALSE}
+require("devtools")
+devtools::install_github("sophiamjiali/BioTokenizeR", build_vignettes = TRUE)
 library(BioTokenizeR)
 ```
 
-To list all sample functions available in the package, run the following command
-in an R console.
+To list all sample functions available in the package, run the following
+command in an R console.
+
 ```{r}
 ls("package:BioTokenizeR")
 ```
 
-Sample datasets are provided in the `inst/extdata` subdirectory. To load them, 
-run the following commands in an R console.
-```{r}
-dna_path <- system.file("extdata", "example_dna.rds", package = "BioTokenizeR")
-rna_path <- system.file("extdata", "example_rna.rds", package = "BioTokenizeR")
-aa_path <- system.file("extdata", "example_aa.rds", package = "BioTokenizeR")
+Sample datasets are provided in the `inst/extdata` subdirectory as FASTA
+files. To load them, run the following commands in an R console.
 
-example_dna <- readRDS(dna_path)
-example_rna <- readRDS(rna_path)
-example_aa <- readRDS(aa_path)
+```{r, eval = FALSE}
+library(Biostrings)
+
+dna_path <- system.file("extdata", "sample_dna.fasta", package = "BioTokenizeR")
+rna_path <- system.file("extdata", "sample_rna.fasta", package = "BioTokenizeR")
+aa_path <- system.file("extdata", "sample_aa.fasta", package = "BioTokenizeR")
+
+example_dna <- Biostrings::readDNAStringSet(dna_path)
+example_rna <- Biostrings::readRNAStringSet(rna_path)
+example_aa <- Biostrings::readAAStringSet(aa_path)
 ```
 
-To run the Shiny app for this package and explore the pipeline using its user 
-interface, run the following line in your R console.
-```{r}
-# run_BioTokenizeR()
+To run the Shiny app for this package and explore the pipeline using its
+user interface, run the following line in your R console.
+
+```{r, eval = FALSE}
+run_BioTokenizeR()
 ```
 
 ## Workflow
 
 ### Step 1. Load the data
-We first start by loading the data into the R environment. Here, we load the 
-provided example DNA dataset.
+
+We first start by loading the data into the R environment. Here, we load
+the provided example DNA dataset.
+
 ```{r}
-dna_path <- system.file("extdata", "example_dna.rds", package = "BioTokenizeR")
-dna_seqs <- readRDS(dna_path)
+dna_path <- system.file("extdata", "sample_dna.fasta", package = "BioTokenizeR")
+dna_seqs <- Biostrings::readDNAStringSet(dna_path)
 ```
 
 ### Step 2. Preprocess the data
+
 Preprocessing ensures that sequences are cleaned, normalized, and ready
 for downstream analysis. This includes trimming ambiguous nucleotides,
 removing invalid characters, and converting sequences to lowercase.
+
+Run the code below to preprocess the sequences and observe that they are
+standardized per the steps we have described. Notice that
+`dna_preproc$preproc_steps` indicate the preprocessing steps performed.
+Further notice that the object type is `bioBPE_preprocessed`, an object
+defined by the BioTokenizeR package that indicates the sequences have
+entered the tokenization workflow.
+
 ```{r}
 dna_preproc <- preprocess_sequences(seqs = dna_seqs)
 dna_preproc
 ```
 
 ### Step 3. Annotate the data
-Next, we annotate sequences with relevant biological features. For DNA, this 
-typically includes sequence length and GC content. Annotation steps are stored 
-within the returned object for reproducibility.
+
+Next, we annotate sequences with relevant biological features. For DNA,
+this typically includes sequence length and GC content. Annotation steps
+are stored within the returned object for reproducibility.
+
+Run the code to annotate the sequences and observe that
+`dna_annot$annot_steps` now show the biological annotations added to the
+`bioBPE_preprocessed` object. These annotations will be used by the BPE
+algorithm to generate biology-aware tokens.
+
 ```{r}
 dna_annot <- annotate_sequences(bioBPE_seqs = dna_preproc)
 dna_annot
 ```
 
 ### Step 4. Tokenize the data
-Using the preprocessed and annotated sequences, we learn a BPE vocabulary and 
-tokenize the sequences. The vocabulary size can be adjusted depending on the 
-desired granularity.
 
-This will take approximately 45 seconds to run, depending on the local system.
-If tokenization does not complete after five minutes, reduce the vocabulary 
-size.
+Using the preprocessed and annotated sequences, we learn a BPE
+vocabulary and tokenize the sequences. The vocabulary size can be
+adjusted depending on the desired granularity.
+
+Run the code below to tokenize the preprocessed and annotated sequences.
+This process may take several seconds. Notice, after tokenization has
+completed, `bpe_results` contains two fields: `bpe_results$vocab` holds
+information regarding the vocabulary learned during the tokenization
+process: `vocab` is the tokens learned from the sequences and
+`bio_scores` is the scores computed from the sequences' biological
+annotations. The second field, `bpe_results$tokens` is the tokenized
+sequences.
+
 ```{r}
 bpe_results <- tokenize_sequences(bioBPE_seqs = dna_annot, vocab_size = 100)
-str(bpe_results)
+
+# Vocabulary Results
+head(bpe_results$vocab$vocab)
+head(bpe_results$vocab$bio_scores)
+
+# Tokenized Sequences: view the first tokenized sequence, first 10 elements
+head(bpe_results$tokens[[1]], 10)
 ```
 
 ### Step 5. Summarize the data
-We can summarize the tokenized sequences to understand the distribution of 
-tokens across the corpus. This includes frequencies, token lengths, and
-GC-like content.
+
+We can summarize the tokenized sequences to understand the distribution
+of tokens across the corpus. This includes frequencies, token lengths,
+and GC-like content.
+
+Run the code below to summarize the tokenized results. Notice that
+`stats` contains two fields: `stats$corpus` holds corpus-level
+statistics across the sequences themselves and `stats$token_summary`
+contains statistics across the tokens. Both corpus- and token-level
+statistics will be used for downstream analysis.
+
 ```{r}
 stats <- summarize_tokens(tokens = bpe_results$tokens)
-stats
+
+# Corpus-level statistics
+head(stats$corpus)
+
+# Token summary
+head(stats$token_summary)
 ```
 
 ### Step 6. Visualize the data
-Visualizations provide insight into token frequency distributions, the most 
-common tokens, and cumulative coverage across the corpus. An output directory
-can be specified to save all plots generated, or left NULL and not saved.
+
+Visualizations provide insight into token frequency distributions, the
+most common tokens, and cumulative coverage across the corpus. An output
+directory can be specified to save all plots generated, or left NULL and
+not saved.
+
 ```{r}
 plots <- visualize_tokens(stats, top_n = 10, output_dir = "output")
+```
 
+#### 6. A. Visualizing Token Frequency Distributions
+
+Run the code below to generate a token frequency distribution plot that
+describes the relative commonness of each token in the provided
+sequences and the overall distribution shape. Let the x-axis represent
+token rank and y-axis represent token frequency in the learned
+vocabulary. Both axes are in the log-scale to more clearly visualize
+patterns across tokens that vary by orders of magnitude, which is
+typical in biological sequences.
+
+Consider the plot generated by the code below. We observe a Zipf-like
+distribution of the tokenized sequences through the relatively straight
+segment in the log-scale. This indicates that the most frequent tokens
+follow a power-law relationship, which is what we expect in language and
+biological sequences. The sudden drop to low frequency values at the
+highest ranks show that the corpus was limited by the vocabulary size.
+
+Feel free to experiment with this value when tokenizing sequences. Be
+aware that run-time will be impacted by larger values. At larger
+vocabulary sizes, we expect to see a longer tail and a smoother curve at
+the low-frequency end.
+
+```{r}
 plots$frequency_distribution
+```
+
+#### 6. B. Visualizing The Top N Most Frequent Tokens
+
+Run the code below to generate a top N most frequent tokens plot that
+describes the frequency distribution across the top tokens. Let the
+x-axis represent token frequency and y-axis represent token rank.
+
+Consider the plot generated by the code below. We expect that higher
+frequency reflects importance or commonness, where in biological
+sequences, this may correspond to common motifs, codons, or regulatory
+sequences depending on the vocabulary size. In our results, we observe
+dinucleotide patterns dominating the most frequent tokens of the corpus,
+where `CG` and `GC` may correspond to CpG motifs, and `TT` and `AT` may
+correspond to AT-rich motifs in promoter regions, structural features,
+or high-flexibility regions.
+
+Feel free to experiment with different sequencing datasets and compare
+the differences between DNA, RNA, and protein sequencing data.
+
+```{r}
 plots$top_tokens
+```
+
+#### 6. C. Visualizing Token Cumulative Coverage
+
+Run the code below to generate a cumulative coverage plot visualizing
+how well the vocabulary learned by the tokenization algorithm covers the
+sequencing dataset. Let the x-axis represent the ranked tokens and
+y-axis represent the cumulative frequency.
+
+Consider the plot generated by the code below. We observe a steep rise
+in the beginning as the top most frequent tokens cover a large fraction
+of the sequences. In the results below, we see that the top 20 tokens
+cover approximately 50% of all bases in the DNA sequence dataset we are
+working with. We then observe a flattening tail where the least frequent
+tokens cover only a small fraction. Evidently, we see in our results
+that tokens from rank 20-100, where the vocabulary size was set to 100,
+covers the rest of the bases.
+
+Here, we can interpret that the top most frequent tokens learned by the
+tokenization algorithm account for the highest coverage and may
+correspond to conserved motifs, repeats, or biologically important
+sites. Conversely, the least frequent tokens likely represent rarer
+motifs.
+
+```{r}
 plots$cumulative_coverage
 ```
 
 ## Referencing this Package
 
-Use the following citation to reference this package.
-- Li, S. (2025) BioTokenizeR: Biology-Aware Byte-Pair Encoding Tokenization of Biological Sequences. Unpublished. https://github.com/sophiamjiali/BioTokenizeR
+Use the following citation to reference this package. - Li, S. (2025)
+BioTokenizeR: Biology-Aware Byte-Pair Encoding Tokenization of
+Biological Sequences. Unpublished.
+<https://github.com/sophiamjiali/BioTokenizeR>
 
 ## References for the Development of this Package
 
-- Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM - Biologically‑Informed Tokenization Framework. bioRxiv.  https://doi.org/10.1101/2025.03.27.645711
+-   Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM -
+    Biologically‑Informed Tokenization Framework. bioRxiv.
+    <https://doi.org/10.1101/2025.03.27.645711>
 
-- Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.76.0, <https://bioconductor.org/packages/Biostrings>.
+-   Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). *Biostrings:
+    Efficient manipulation of biological strings*.
+    <doi:10.18129/B9.bioc.Biostrings>
+    <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version
+    2.76.0, <https://bioconductor.org/packages/Biostrings>.
 
-- R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+-   R Core Team (2024). *R: A Language and Environment for Statistical
+    Computing*. R Foundation for Statistical Computing, Vienna, Austria.
+    <https://www.R-project.org/>.
 
-- Sennrich R, Haddow B, Birch A (2016). Neural Machine Translation of Rare Words with Subword Units. Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics. Association for Computational Linguistics, 1715–1725. https://aclanthology.org/P16-1162
+-   Sennrich R, Haddow B, Birch A (2016). Neural Machine Translation of
+    Rare Words with Subword Units. Proceedings of the 54th Annual
+    Meeting of the Association for Computational Linguistics.
+    Association for Computational Linguistics, 1715–1725.
+    <https://aclanthology.org/P16-1162>
 
-- Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4, https://ggplot2.tidyverse.org.
+-   Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.
+    Springer-Verlag New York. ISBN 978-3-319-24277-4,
+    <https://ggplot2.tidyverse.org>.
 
 ```{r}
 sessionInfo()
