@@ -29,6 +29,17 @@ iteratively identifying the most frequent adjacent token pairs and merging
 them into new tokens until the specified vocabulary size is reached.
 The process is weighted by biological scores derived from sequence annotations.
 }
+\references{
+{
+Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+https://doi.org/10.1101/2025.03.27.645711
+
+R Core Team (2025). R: A Language and Environment for Statistical
+Computing. R Foundation for Statistical Computing, Vienna, Austria.
+https://www.R-project.org/.
+}
+}
 \seealso{
 Other tokenization: 
 \code{\link{.BioTokenizeR_apply_bpe}()},

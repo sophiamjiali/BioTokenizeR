@@ -22,6 +22,13 @@ encoded sequences, weighting each pair by a biological score associated
 with its sequence. Pairs are represented as space-separated strings of
 integer token IDs.
 }
+\references{
+{
+Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+https://doi.org/10.1101/2025.03.27.645711
+}
+}
 \seealso{
 Other tokenization: 
 \code{\link{.BioTokenizeR_apply_bpe}()},

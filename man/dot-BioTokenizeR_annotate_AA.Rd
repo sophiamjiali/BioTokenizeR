@@ -24,6 +24,24 @@ Computes basic annotations for AA sequences, including sequence length,
 hydrophobic fraction, charged fraction, polar fraction, and composition
 entropy, for downstream byte-pair encoding (BPE) analysis.
 }
+\references{
+{
+Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S, Fukunaga
+T, Hamada M (2021). Representation learning applications in biological
+sequence analysis. Computational and Structural Biotechnology Journal,
+19: 3198-3208. doi:10.1016/j.csbj.2021.05.039.
+
+Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). \emph{Biostrings:
+Efficient manipulation of biological strings}.
+doi:10.18129/B9.bioc.Biostrings \url{https://doi.org/10.18129/B9.bioc.Biostrings},
+R package version 2.78.0, \url{https://bioconductor.org/packages/Biostrings}.
+
+Pagès H, Lawrence M, Aboyoun P (2025). \emph{S4Vectors:
+Foundation of vector-like and list-like containers in Bioconductor}.
+doi:10.18129/B9.bioc.S4Vectors \url{https://doi.org/10.18129/B9.bioc.S4Vectors},
+R package version 0.48.0, \url{https://bioconductor.org/packages/S4Vectors}.
+}
+}
 \seealso{
 Other annotation: 
 \code{\link{.BioTokenizeR_annotate_DNA}()},

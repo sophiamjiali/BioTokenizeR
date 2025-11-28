@@ -11,11 +11,11 @@ library(BioTokenizeR)
 
 # Define constants reused across tests: partial string matching
 PREPROC_COLUMNS <- c("seqs", "type", "preproc_steps", "annot_steps")
-CLASS_ERROR <- "'seqs' must be a Biostrings::XStringSet"
+CLASS_ERROR     <- "'seqs' must be a Biostrings::XStringSet"
 
 DNA_PREPROC_STEPS <- c("to_lower", "trim_N", "remove_ambiguous", "drop_empty")
 RNA_PREPROC_STEPS <- c("to_lower", "trim_N", "remove_ambiguous", "drop_empty")
-AA_PREPROC_STEPS <- c("to_lower", "remove_non_canonical", "drop_empty")
+AA_PREPROC_STEPS  <- c("to_lower", "remove_non_canonical", "drop_empty")
 
 # =====| Input Validation |=====================================================
 

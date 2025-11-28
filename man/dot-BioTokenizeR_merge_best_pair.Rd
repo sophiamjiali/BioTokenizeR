@@ -24,6 +24,13 @@ Replaces all occurrences of a specified adjacent token pair \verb{(a, b)} in a
 list of integer-encoded sequences with a new merged token ID. Sequences
 that are too short or do not contain the pair are returned unchanged.
 }
+\references{
+{
+Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+https://doi.org/10.1101/2025.03.27.645711
+}
+}
 \seealso{
 Other tokenization: 
 \code{\link{.BioTokenizeR_apply_bpe}()},

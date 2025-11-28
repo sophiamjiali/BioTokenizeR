@@ -10,12 +10,12 @@
 library(BioTokenizeR)
 
 # Define constants reused across tests: partial string matches
-TYPE_ERROR <- "'tokens' must be a non-empty"
+TYPE_ERROR    <- "'tokens' must be a non-empty"
 ELEMENT_ERROR <- "All elements of 'tokens'"
 
-SUMMARY_COLUMNS <- c("corpus", "token_summary", "token_length_summary")
-CORPUS_COLUMNS <- c("num_sequences", "total_tokens", "avg_seq_length", 
-                    "median_seq_length", "vocab_size")
+SUMMARY_COLUMNS       <- c("corpus", "token_summary", "token_length_summary")
+CORPUS_COLUMNS        <- c("num_sequences", "total_tokens", "avg_seq_length", 
+                           "median_seq_length", "vocab_size")
 TOKEN_SUMMARY_COLUMNS <- c("token", "frequency", "length", "gc_like")
 
 # =====| Input Validation |=====================================================

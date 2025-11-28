@@ -12,8 +12,10 @@
 
 #' Visualize Tokenized Sequence Statistics
 #'
-#' Generates visual summaries of tokenized biological sequences, including
-#' token frequency distribution, top tokens, and cumulative coverage.
+#' Generates all provided visual summaries of tokenized biological sequences of
+#' the package, including token frequency distribution, top tokens, and 
+#' cumulative coverage. Vocabulary and tokenized sequence statistics are used
+#' for generation.
 #'
 #' @param statistics An object of class `"bioBPE_summary"` returned by
 #'    `summarize_tokens()`.
@@ -64,6 +66,12 @@
 #'    aa_plots <- visualize_tokens(statistics = data$aa_summary,
 #'                                  top_n = 30,
 #'                                  output_dir = NULL)
+#' }
+#' 
+#' @references {
+#'     Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM -
+#'     Biologically‑Informed Tokenization Framework. bioRxiv.
+#'     https://doi.org/10.1101/2025.03.27.645711
 #' }
 #'
 #' @family visualization
@@ -124,6 +132,16 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #'    # Visualize token frequency distribution
 #'    plot <- plot_token_frequency_distribution(statistics = data$dna_summary,
 #'                                              output_dir = NULL)
+#' }
+#' 
+#' @references {
+#'     Müller K, Wickham H (2025). _tibble: Simple Data Frames_. 
+#'     doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, 
+#'     R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
+#' 
+#'     Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. 
+#'     Springer-Verlag New York. ISBN 978-3-319-24277-4, 
+#'     https://ggplot2.tidyverse.org.
 #' }
 #'
 #' @family visualization
@@ -206,6 +224,21 @@ plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
 #'    plot <- plot_top_tokens(statistics = data$dna_summary,
 #'                            top_n      = 10,
 #'                            output_dir = NULL)
+#' }
+#' 
+#' @references {
+#'     R Core Team (2025). R: A Language and Environment for Statistical
+#'     Computing. R Foundation for Statistical Computing, Vienna, Austria.
+#'     https://www.R-project.org/.
+#'     
+#'     Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. 
+#'     Springer-Verlag New York. ISBN 978-3-319-24277-4, 
+#'     https://ggplot2.tidyverse.org.
+#' 
+#'     Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A 
+#'     Grammar of Data Manipulation_. doi:10.32614/CRAN.package.dplyr 
+#'     <https://doi.org/10.32614/CRAN.package.dplyr>, R package version 1.1.4,
+#'     <https://CRAN.R-project.org/package=dplyr>.
 #' }
 #'
 #' @family visualization
@@ -295,6 +328,17 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #'    plot <- plot_cumulative_coverage(statistics = data$dna_summary,
 #'                                     output_dir = NULL)
 #' }
+#' 
+#' @references {
+#'     Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. 
+#'     Springer-Verlag New York. ISBN 978-3-319-24277-4, 
+#'     https://ggplot2.tidyverse.org.
+#' 
+#'     Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A 
+#'     Grammar of Data Manipulation_. doi:10.32614/CRAN.package.dplyr 
+#'     <https://doi.org/10.32614/CRAN.package.dplyr>, R package version 1.1.4,
+#'     <https://CRAN.R-project.org/package=dplyr>.
+#' }
 #'
 #' @family visualization
 #' @keywords visualization plotting tokenization
@@ -329,7 +373,7 @@ plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
   
   # Save the plot if an output directory was provided, initializing if necessary
   if (!is.null(output_dir)) {
-    if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+    if (!dir.exists(output_dir)) { dir.create(output_dir, recursive = TRUE) }
     
     ggplot2::ggsave(
       filename = file.path(output_dir, "cumulative_coverage.png"),

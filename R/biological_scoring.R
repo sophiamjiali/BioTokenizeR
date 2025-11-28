@@ -11,8 +11,8 @@
 
 # =====| Global Constants |=====================================================
 
-# Define weights of each annotation for computing bio-score
-BIO_SCORE_WEIGHTS = list(
+# Define default weights of each annotation for computing bio-score
+DEFAULT_BIO_WEIGHTS = list(
   length               = 1,
   gc_content           = 1,
   hydrophobic_fraction = 1,
@@ -26,20 +26,61 @@ BIO_SCORE_WEIGHTS = list(
 #' Compute Biological Score for BPE Tokenization
 #'
 #' Computes a biological score from the provided annotations as input into 
-#' biology-aware BPE tokenization.
+#' biology-aware BPE tokenization. This biological score is used to incorporate
+#' awareness of biological annotations into the NLP-style tokenization and 
+#' vocabulary learning phase of the pipeline, utilizing user-provided (or
+#' default) weightings of the implemented annotations to fine-tune performance.
 #'
 #' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed 
 #'    DNA, RNA, or AA sequences.
+#' @param bio_weights A named list of numerical values containing the following:
+#'    \describe{
+#'        \item{`length`}{A numerical value indicating the weight of the length 
+#'            annotation when computing each sequence's biological score.},
+#'        \item{`gc_content`}{A numerical value indicating the weight of the 
+#'            GC-content annotation when computing each sequence's biological score.},
+#'        \item{`hydrophobic_fraction`}{A numerical value indicating the weight 
+#'            of the hydrophobic fraction annotation when computing each sequence's 
+#'            biological score.},
+#'        \item{`charged_fraction`}{A numerical value indicating the weight of
+#'            the charged fraction annotation when computing each sequence's 
+#'            biological score.},
+#'        \item{`polar_fraction`}{A numerical value indicating the weight of the
+#'            polar fraction annotation when computing each sequence's biological 
+#'            score.},
+#'        \item{`composition_entropy`}{A numerical value indicating the weight 
+#'            of the composition entropy annotation when computing each sequence's
+#'            biological score.}
+#'    }
 #'
 #' @return A numeric vector of biology scores per sequence sorted in the same
 #'    order as `bioBPE_seqs`.
+#'    
+#' @references {
+#'    Dotan E, Jaschek G, Pupko T, Belinkov Y (2024). Effect of tokenization on
+#'    transformers for biological sequences. Bioinformatics, 40(4): btae196.
+#'    doi:10.1093/bioinformatics/btae196. PMCID: PMC11055402.
+#' 
+#'    Pagès H, Lawrence M, Aboyoun P (2025). S4Vectors:
+#'    Foundation of vector-like and list-like containers in Bioconductor.
+#'    doi:10.18129/B9.bioc.S4Vectors https://doi.org/10.18129/B9.bioc.S4Vectors,
+#'    R package version 0.48.0, https://bioconductor.org/packages/S4Vectors.
+#'    
+#'    Wickham H, Pedersen T, Seidel D (2025). _scales: Scale Functions for 
+#'    Visualization_. doi:10.32614/CRAN.package.scales 
+#'    <https://doi.org/10.32614/CRAN.package.scales>, R package version 1.4.0, 
+#'    <https://CRAN.R-project.org/package=scales>.
+#' }
 #'
 #' @family preprocessing
 #' @keywords preprocessing internal
 #' 
 #' @importFrom S4Vectors mcols
 #' @importFrom scales rescale
-.BioTokenizeR_compute_bio_score <- function(bioBPE_seqs) {
+.BioTokenizeR_compute_bio_score <- function(bioBPE_seqs, bio_weights = NULL) {
+  
+  # Parse if biological annotation weights were provided, else use defaults
+  if (is.null(bio_weights)) { bio_weights = DEFAULT_BIO_WEIGHTS }
   
   # Compute bio-score based on what annotations are available
   scoring_funcs <- list(
@@ -59,7 +100,7 @@ BIO_SCORE_WEIGHTS = list(
   colnames(scores) <- bioBPE_seqs$annot_steps
   
   # Apply annotation-weighting upon the computed scores
-  weights <- unlist(BIO_SCORE_WEIGHTS)[colnames(scores)]
+  weights <- unlist(bio_weights)[colnames(scores)]
   bio_score <- as.numeric(scores %*% weights) / sum(weights)
   
   return (bio_score)
@@ -67,6 +108,27 @@ BIO_SCORE_WEIGHTS = list(
 
 # =====| Annotation Scoring Helpers |===========================================
 
+#' Normalize Biological Annotation
+#'
+#' This function normalizes a biological annotation of a DNA, RNA, or AA 
+#' sequence through min-max scaling to (0, 1). Scaling is necessary to ensure
+#' comparability between sequences within a set.
+#' 
+#' @param x A numerical value to min-max scale.
+#' 
+#' @return A numerical value scaled to the range of (0, 1).
+#' 
+#' @references {
+#'    Wickham H, Pedersen T, Seidel D (2025). _scales: Scale Functions for 
+#'    Visualization_. doi:10.32614/CRAN.package.scales 
+#'    <https://doi.org/10.32614/CRAN.package.scales>, R package version 1.4.0, 
+#'    <https://CRAN.R-project.org/package=scales>.
+#' }
+#' 
+#' @family preprocessing
+#' @keywords preprocessing internal
+#' 
+#' @importFrom scales rescale
 .BioTokenizeR_normalize <- function(x) {
   return (scales::rescale(x, to = c(0, 1)))
 }

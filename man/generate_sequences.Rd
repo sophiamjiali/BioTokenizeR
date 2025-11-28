@@ -26,4 +26,24 @@ to the workflow for standardized error checking.
 }
 
 }
+\references{
+{
+Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+Efficient manipulation of biological strings.
+doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Ponty Y, Termier M, Denise A (2006). GenRGenS: software for generating
+random genomic sequences and structures. Bioinformatics, 22(12): 1534-
+1535. doi:10.1093/bioinformatics/btl113.
+}\if{html}{\out{</div>}}
+
+}
+}
+\seealso{
+Other utilities: 
+\code{\link{generate_data}()},
+\code{\link{generate_dummy_data}()}
+}
+\concept{utilities}
 \keyword{internal}

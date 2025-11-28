@@ -78,6 +78,13 @@ CANONICAL_AA  <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N",
 #'    )
 #' }
 #' 
+#' @references {
+#'     Ponty Y, Termier M, Denise A (2006). GenRGenS: software for generating
+#'     random genomic sequences and structures. Bioinformatics, 22(12): 1534-
+#'     1535. doi:10.1093/bioinformatics/btl113.
+#' }
+#' 
+#' @family utilities
 #' @keywords internal
 generate_data <- function(n          = 1, 
                           length     = 21,
@@ -164,14 +171,30 @@ generate_data <- function(n          = 1,
   result <- list(
     
     # Define raw generated sequences and their letters per type
-    dna_seq     = dna_seq,     rna_seq = rna_seq,         aa_seq = aa_seq,
-    dna_letters = dna_letters, rna_letters = rna_letters, aa_letters = aa_letters,
+    dna_seq     = dna_seq,     
+    rna_seq     = rna_seq,         
+    aa_seq      = aa_seq,
+    
+    dna_letters = dna_letters, 
+    rna_letters = rna_letters,
+    a_letters   = aa_letters,
     
     # Define intermediate results from each step of the pipeline
-    dna_preproc = dna_preproc, rna_preproc = rna_preproc, aa_preproc = aa_preproc,
-    dna_annot   = dna_annot,   rna_annot = rna_annot,     aa_annot = aa_annot,
-    dna_tokens  = dna_tokens,  rna_tokens  = rna_tokens,  aa_tokens   = aa_tokens,
-    dna_summary = dna_summary, rna_summary = rna_summary, aa_summary  = aa_summary
+    dna_preproc = dna_preproc, 
+    rna_preproc = rna_preproc, 
+    aa_preproc  = aa_preproc,
+    
+    dna_annot   = dna_annot,   
+    rna_annot   = rna_annot,     
+    aa_annot    = aa_annot,
+    
+    dna_tokens  = dna_tokens,  
+    rna_tokens  = rna_tokens,  
+    aa_tokens   = aa_tokens,
+    
+    dna_summary = dna_summary, 
+    rna_summary = rna_summary, 
+    aa_summary  = aa_summary
   )
   
   return (result)
@@ -197,6 +220,18 @@ generate_data <- function(n          = 1,
 #'    dummy_data <- generate_dummy_data()
 #' }
 #' 
+#' @references {
+#'     Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+#'     Efficient manipulation of biological strings.
+#'     doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+#'     R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+#' 
+#'     Ponty Y, Termier M, Denise A (2006). GenRGenS: software for generating
+#'     random genomic sequences and structures. Bioinformatics, 22(12): 1534-
+#'     1535. doi:10.1093/bioinformatics/btl113.
+#' }
+#' 
+#' @family utilities
 #' @keywords internal
 #' @importFrom Biostrings DNAStringSet RNAStringSet AAStringSet
 generate_dummy_data <- function() {
@@ -248,6 +283,18 @@ generate_dummy_data <- function() {
 #'    dummy_data <- generate_dummy_data()
 #' }
 #' 
+#' @references {
+#'     Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+#'     Efficient manipulation of biological strings.
+#'     doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+#'     R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+#' 
+#'     Ponty Y, Termier M, Denise A (2006). GenRGenS: software for generating
+#'     random genomic sequences and structures. Bioinformatics, 22(12): 1534-
+#'     1535. doi:10.1093/bioinformatics/btl113.
+#' }
+#' 
+#' @family utilities
 #' @keywords internal
 #' @importFrom Biostrings DNAStringSet RNAStringSet AAStringSet
 generate_sequences <- function(type = NULL, n = 1, length = 21) {

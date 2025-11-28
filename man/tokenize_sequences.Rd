@@ -23,8 +23,12 @@ a vector of token strings.}
 }
 }
 \description{
-Learns a byte-pair encoding (BPE) vocabulary from preprocessed sequences and
-applies it to generate tokenized representations for downstream analysis.
+This function learns a byte-pair encoding (BPE) vocabulary from preprocessed
+sequences and applies it to generate tokenized representations for downstream
+analysis. A vocabulary of the specified size is first learned from the
+sequence dataset, through which merges are learned in order and applied to
+tokenize the sequences and returned. This vocabulary and the tokenized
+sequences are used for downstream analysis in the pipeline.
 }
 \details{
 The tokenization step includes learning the BPE vocabulary and
@@ -63,6 +67,13 @@ within the BPE algorithm
                                    vocab_size  = 15)
 }
 
+}
+\references{
+{
+Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+https://doi.org/10.1101/2025.03.27.645711
+}
 }
 \seealso{
 Other tokenization: 

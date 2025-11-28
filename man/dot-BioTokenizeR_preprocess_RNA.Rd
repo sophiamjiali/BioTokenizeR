@@ -23,9 +23,18 @@ downstream byte-pair encoding (BPE) tokenization. Steps include case
 normalization, trimming ambiguous nucleotides, and removing invalid
 characters.
 }
+\references{
+{
+Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+Efficient manipulation of biological strings.
+doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+}
+}
 \seealso{
 Other preprocessing: 
 \code{\link{.BioTokenizeR_compute_bio_score}()},
+\code{\link{.BioTokenizeR_normalize}()},
 \code{\link{.BioTokenizeR_preprocess_AA}()},
 \code{\link{.BioTokenizeR_preprocess_DNA}()},
 \code{\link{preprocess_sequences}()}

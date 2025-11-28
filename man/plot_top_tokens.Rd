@@ -43,6 +43,24 @@ in the tokenized sequences.
 }
 
 }
+\references{
+{
+R Core Team (2025). R: A Language and Environment for Statistical
+Computing. R Foundation for Statistical Computing, Vienna, Austria.
+https://www.R-project.org/.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. 
+Springer-Verlag New York. ISBN 978-3-319-24277-4, 
+https://ggplot2.tidyverse.org.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A 
+Grammar of Data Manipulation_. doi:10.32614/CRAN.package.dplyr 
+<https://doi.org/10.32614/CRAN.package.dplyr>, R package version 1.1.4,
+<https://CRAN.R-project.org/package=dplyr>.
+}\if{html}{\out{</div>}}
+
+}
+}
 \seealso{
 Other visualization: 
 \code{\link{plot_cumulative_coverage}()},

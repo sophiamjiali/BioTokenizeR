@@ -6,6 +6,9 @@
 \usage{
 run_BioTokenizeR()
 }
+\value{
+No return value. Opens a Shiny page.
+}
 \description{
 This function launches the Shiny app for the BioTokenizeR package, displaying
 an interactive web app user interface.
@@ -16,3 +19,19 @@ an interactive web app user interface.
 }
 
 }
+\references{
+{
+Chang W, Cheng J, Allaire J, Sievert C, Schloerke B, Xie Y, Allen J,
+McPherson J, Dipert A, Borges B (2025). \emph{shiny: Web Application Framework
+for R}. doi:10.32614/CRAN.package.shiny
+\url{https://doi.org/10.32614/CRAN.package.shiny}, R package
+version 1.11.1, \url{https://CRAN.R-project.org/package=shiny}.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Grolemund, G. (2015). Learn Shiny - Video Tutorials. 
+https://shiny.rstudio.com/tutorial/.
+}\if{html}{\out{</div>}}
+
+}
+}
+\concept{shiny}
+\keyword{shiny}

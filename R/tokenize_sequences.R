@@ -12,8 +12,12 @@
 
 #' Tokenize Biological Sequences Using BPE
 #'
-#' Learns a byte-pair encoding (BPE) vocabulary from preprocessed sequences and
-#' applies it to generate tokenized representations for downstream analysis.
+#' This function learns a byte-pair encoding (BPE) vocabulary from preprocessed 
+#' sequences and applies it to generate tokenized representations for downstream 
+#' analysis. A vocabulary of the specified size is first learned from the 
+#' sequence dataset, through which merges are learned in order and applied to
+#' tokenize the sequences and returned. This vocabulary and the tokenized 
+#' sequences are used for downstream analysis in the pipeline.
 #'
 #' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed 
 #'    DNA, RNA, or AA sequences.
@@ -62,6 +66,12 @@
 #'                                     vocab_size  = 15)
 #'    aa_tokens <- tokenize_sequences(bioBPE_seqs = data$aa_annot,
 #'                                    vocab_size  = 15)
+#' }
+#' 
+#' @references {
+#'     Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM - 
+#'     Biologically‑Informed Tokenization Framework. bioRxiv. 
+#'     https://doi.org/10.1101/2025.03.27.645711
 #' }
 #'
 #' @family tokenization
@@ -115,6 +125,16 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 #'
 #' @return A list of tokenized sequences, where each element is a character  
 #'    vector of tokens corresponding to a single sequence.
+#'    
+#' @references {
+#'    Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM - 
+#'    Biologically‑Informed Tokenization Framework. bioRxiv. 
+#'    https://doi.org/10.1101/2025.03.27.645711
+#'    
+#'    R Core Team (2025). R: A Language and Environment for Statistical
+#'    Computing. R Foundation for Statistical Computing, Vienna, Austria.
+#'    https://www.R-project.org/.
+#' }
 #'
 #' @family tokenization
 #' @keywords tokenization internal
@@ -184,6 +204,16 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 #'        \item{bio_scores}{Numeric vector of biological scores associated with each
 #'            sequence.}
 #'    }
+#'    
+#' @references {
+#'    Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM - 
+#'    Biologically‑Informed Tokenization Framework. bioRxiv. 
+#'    https://doi.org/10.1101/2025.03.27.645711
+#'    
+#'    R Core Team (2025). R: A Language and Environment for Statistical
+#'    Computing. R Foundation for Statistical Computing, Vienna, Austria.
+#'    https://www.R-project.org/.
+#' }
 #'
 #' @family tokenization
 #' @keywords tokenization internal
@@ -273,6 +303,12 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 #'
 #' @return A named numeric vector of weighted pair counts, with names being 
 #'    space-separated token ID pairs (e.g., `"1 2"`), sorted in decreasing order.
+#'    
+#' @references {
+#'    Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM - 
+#'    Biologically‑Informed Tokenization Framework. bioRxiv. 
+#'    https://doi.org/10.1101/2025.03.27.645711
+#' }
 #'
 #' @family tokenization
 #' @keywords tokenization internal
@@ -320,6 +356,12 @@ tokenize_sequences <- function(bioBPE_seqs, vocab_size = 15) {
 #'
 #' @return A list of integer vectors, with the specified pairs replaced by 
 #'    `new_id`.
+#'    
+#' @references {
+#'    Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM - 
+#'    Biologically‑Informed Tokenization Framework. bioRxiv. 
+#'    https://doi.org/10.1101/2025.03.27.645711
+#' }
 #'
 #' @family tokenization
 #' @keywords tokenization internal

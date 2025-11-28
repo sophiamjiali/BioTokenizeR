@@ -41,6 +41,19 @@ visual overview of token distribution across the corpus.
 }
 
 }
+\references{
+{
+Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}.
+doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble},
+R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. 
+Springer-Verlag New York. ISBN 978-3-319-24277-4, 
+https://ggplot2.tidyverse.org.
+}\if{html}{\out{</div>}}
+
+}
+}
 \seealso{
 Other visualization: 
 \code{\link{plot_cumulative_coverage}()},

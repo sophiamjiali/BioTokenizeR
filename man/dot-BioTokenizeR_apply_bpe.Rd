@@ -21,6 +21,17 @@ Converts sequences into tokenized form using a learned byte-pair encoding (BPE)
 vocabulary. Base tokens are first converted to integer IDs, and learned merges
 are applied sequentially to generate final tokenized sequences.
 }
+\references{
+{
+Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+https://doi.org/10.1101/2025.03.27.645711
+
+R Core Team (2025). R: A Language and Environment for Statistical
+Computing. R Foundation for Statistical Computing, Vienna, Austria.
+https://www.R-project.org/.
+}
+}
 \seealso{
 Other tokenization: 
 \code{\link{.BioTokenizeR_compute_bio_pair_frequencies}()},

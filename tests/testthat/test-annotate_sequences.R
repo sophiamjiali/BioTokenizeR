@@ -10,15 +10,15 @@
 library(BioTokenizeR)
 
 # Define constants reused across tests: partial string matches
-CLASS_ERROR <- "'bioBPE_seqs' must be a"
-TYPE_ERROR <- "'bioBPE_seqs' is an unknown"
+CLASS_ERROR  <- "'bioBPE_seqs' must be a"
+TYPE_ERROR   <- "'bioBPE_seqs' is an unknown"
 LENGTH_ERROR <- "'bioBPE_seqs' must contain at least"
 
-ANNOT_COLUMNS <- c("seqs", "type", "preproc_steps", "annot_steps")
+ANNOT_COLUMNS   <- c("seqs", "type", "preproc_steps", "annot_steps")
 DNA_ANNOT_STEPS <- c("length", "gc_content")
 RNA_ANNOT_STEPS <- c("length", "gc_content")
-AA_ANNOT_STEPS <- c("length", "hydrophobic_fraction", "charged_fraction",
-                    "polar_fraction", "composition_entropy")
+AA_ANNOT_STEPS  <- c("length", "hydrophobic_fraction", "charged_fraction",
+                     "polar_fraction", "composition_entropy")
 
 # =====| Input Validation |=====================================================
 

@@ -27,8 +27,10 @@ coverage of ranked tokens.}
 }
 }
 \description{
-Generates visual summaries of tokenized biological sequences, including
-token frequency distribution, top tokens, and cumulative coverage.
+Generates all provided visual summaries of tokenized biological sequences of
+the package, including token frequency distribution, top tokens, and
+cumulative coverage. Vocabulary and tokenized sequence statistics are used
+for generation.
 }
 \details{
 The visualization step includes three plots. The exact operations
@@ -66,6 +68,13 @@ across token ranks
                                  output_dir = NULL)
 }
 
+}
+\references{
+{
+Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+https://doi.org/10.1101/2025.03.27.645711
+}
 }
 \seealso{
 Other visualization: 

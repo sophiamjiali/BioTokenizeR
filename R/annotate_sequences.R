@@ -21,9 +21,10 @@ POLAR <- c("S", "T", "N", "Q")
 
 #' Annotate Biological Sequences for BPE Workflows
 #'
-#' Adds biological annotations to preprocessed sequences, preparing them for
-#' downstream byte-pair encoding (BPE) tokenization and analysis.
-#' Annotation steps depend on the sequence type (DNA, RNA, or amino acids).
+#' This function adds biological annotations to preprocessed sequences, 
+#' preparing them for downstream byte-pair encoding (BPE) tokenization and 
+#' analysis. Annotation steps depend on the sequence type (DNA, RNA, or amino 
+#' acids).
 #'
 #' @param bioBPE_seqs A `bioBPE_preprocessed` object containing preprocessed 
 #'    sequences (DNA, RNA, or AA).
@@ -59,6 +60,13 @@ POLAR <- c("S", "T", "N", "Q")
 #'    dna_annot <- annotate_sequences(bioBPE_seqs = data$dna_preproc)
 #'    rna_annot <- annotate_sequences(bioBPE_seqs = data$rna_preproc)
 #'    aa_annot <- annotate_sequences(bioBPE_seqs = data$aa_preproc)
+#' }
+#' 
+#' @references {
+#'    Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S, Fukunaga
+#'    T, Hamada M (2021). Representation learning applications in biological
+#'    sequence analysis. Computational and Structural Biotechnology Journal,
+#'    19: 3198-3208. doi:10.1016/j.csbj.2021.05.039.
 #' }
 #' 
 #' @family annotation
@@ -109,6 +117,23 @@ annotate_sequences <- function(bioBPE_seqs) {
 #'            (`length` and `gc_content`).}
 #'        \item{`steps`}{A character vector of annotation steps applied.}
 #'    }
+#'    
+#' @references {
+#'    Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S, Fukunaga
+#'    T, Hamada M (2021). Representation learning applications in biological
+#'    sequence analysis. Computational and Structural Biotechnology Journal,
+#'    19: 3198-3208. doi:10.1016/j.csbj.2021.05.039.
+#' 
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: 
+#'    Efficient manipulation of biological strings_.
+#'    doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, 
+#'    R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
+#'    
+#'    Pagès H, Lawrence M, Aboyoun P (2025). _S4Vectors: 
+#'    Foundation of vector-like and list-like containers in Bioconductor_.
+#'    doi:10.18129/B9.bioc.S4Vectors <https://doi.org/10.18129/B9.bioc.S4Vectors>, 
+#'    R package version 0.48.0, <https://bioconductor.org/packages/S4Vectors>.
+#' }
 #'
 #' @family annotation
 #' @keywords annotation internal
@@ -145,6 +170,23 @@ annotate_sequences <- function(bioBPE_seqs) {
 #'            (`length` and `gc_content`).}
 #'        \item{`steps`}{A character vector of annotation steps applied.}
 #'    }
+#' 
+#' @references {
+#'    Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S, Fukunaga
+#'    T, Hamada M (2021). Representation learning applications in biological
+#'    sequence analysis. Computational and Structural Biotechnology Journal,
+#'    19: 3198-3208. doi:10.1016/j.csbj.2021.05.039.
+#' 
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: 
+#'    Efficient manipulation of biological strings_.
+#'    doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, 
+#'    R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
+#'    
+#'    Pagès H, Lawrence M, Aboyoun P (2025). _S4Vectors: 
+#'    Foundation of vector-like and list-like containers in Bioconductor_.
+#'    doi:10.18129/B9.bioc.S4Vectors <https://doi.org/10.18129/B9.bioc.S4Vectors>, 
+#'    R package version 0.48.0, <https://bioconductor.org/packages/S4Vectors>.
+#' }
 #'
 #' @family annotation
 #' @keywords annotation internal
@@ -183,6 +225,23 @@ annotate_sequences <- function(bioBPE_seqs) {
 #'            `polar_fraction`, and `composition_entropy`).}
 #'        \item{`steps`}{A character vector of annotation steps applied.}
 #'    }
+#'    
+#' @references {
+#'    Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S, Fukunaga
+#'    T, Hamada M (2021). Representation learning applications in biological
+#'    sequence analysis. Computational and Structural Biotechnology Journal,
+#'    19: 3198-3208. doi:10.1016/j.csbj.2021.05.039.
+#' 
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: 
+#'    Efficient manipulation of biological strings_.
+#'    doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, 
+#'    R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
+#'    
+#'    Pagès H, Lawrence M, Aboyoun P (2025). _S4Vectors: 
+#'    Foundation of vector-like and list-like containers in Bioconductor_.
+#'    doi:10.18129/B9.bioc.S4Vectors <https://doi.org/10.18129/B9.bioc.S4Vectors>, 
+#'    R package version 0.48.0, <https://bioconductor.org/packages/S4Vectors>.
+#' }
 #'
 #' @family annotation
 #' @keywords annotation internal

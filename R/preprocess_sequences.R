@@ -73,6 +73,13 @@ CANONICAL_AA  <- c("A", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N",
 #'    aa_preproc <- preprocess_sequences(seqs = data$aa_seq)
 #' }
 #' 
+#' @references {
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+#'    Efficient manipulation of biological strings.
+#'    doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+#'    R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+#' }
+#' 
 #' @family preprocessing
 #' @keywords preprocessing internal
 #'     
@@ -142,6 +149,13 @@ preprocess_sequences <- function(seqs) {
 #'        \item{`steps`}{A character vector describing preprocessing steps applied.}
 #'    }
 #'
+#' @references {
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+#'    Efficient manipulation of biological strings.
+#'    doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+#'    R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+#' }
+#'
 #' @family preprocessing
 #' @keywords preprocessing internal
 #' 
@@ -162,8 +176,8 @@ preprocess_sequences <- function(seqs) {
   )
   
   # Remove ambiguous nucleotides: characters not in the canonical set
-  canonical <- paste0("[^", paste(CANONICAL_DNA, collapse=""), "]")
-  seqs <- DNAStringSet(gsub(canonical, "", as.character(seqs)))
+  canonical <- paste0("[^", paste(CANONICAL_DNA, collapse = ""), "]")
+  seqs <- Biostrings::DNAStringSet(gsub(canonical, "", as.character(seqs)))
   
   # Drop any empty sequences that may exist
   seqs <- seqs[width(seqs) > 0]
@@ -188,6 +202,13 @@ preprocess_sequences <- function(seqs) {
 #'            preprocessed sequences.}
 #'        \item{`steps`}{A character vector describing preprocessing steps applied.}
 #'    }
+#'    
+#' @references {
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+#'    Efficient manipulation of biological strings.
+#'    doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+#'    R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+#' }
 #'
 #' @family preprocessing
 #' @keywords preprocessing internal
@@ -209,7 +230,7 @@ preprocess_sequences <- function(seqs) {
   )
   
   # Remove ambiguous nucleotides: characters not in the canonical set
-  canonical <- paste0("[^", paste(CANONICAL_RNA, collapse=""), "]")
+  canonical <- paste0("[^", paste(CANONICAL_RNA, collapse = ""), "]")
   seqs <- Biostrings::RNAStringSet(gsub(canonical, "", as.character(seqs)))
   
   # Drop any empty sequences that may exist
@@ -234,6 +255,13 @@ preprocess_sequences <- function(seqs) {
 #'            preprocessed sequences.}
 #'        \item{`steps`}{A character vector describing preprocessing steps applied.}
 #'    }
+#'    
+#' @references {
+#'    Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). Biostrings:
+#'    Efficient manipulation of biological strings.
+#'    doi:10.18129/B9.bioc.Biostrings https://doi.org/10.18129/B9.bioc.Biostrings,
+#'    R package version 2.78.0, https://bioconductor.org/packages/Biostrings.
+#' }
 #'
 #' @family preprocessing
 #' @keywords preprocessing internal
@@ -248,7 +276,7 @@ preprocess_sequences <- function(seqs) {
   seqs <- Biostrings::AAStringSet(tolower(as.character(seqs)))
   
   # Remove ambiguous amino acids: characters not in the canonical set
-  canonical <- paste0("[^", paste(CANONICAL_AA, collapse=""), "]")
+  canonical <- paste0("[^", paste(CANONICAL_AA, collapse = ""), "]")
   seqs <- Biostrings::AAStringSet(gsub(canonical, "", as.character(seqs)))
   
   # Drop any empty sequences that may exist

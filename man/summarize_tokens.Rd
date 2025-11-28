@@ -22,9 +22,10 @@ and GC-like flag.}
 }
 }
 \description{
-Computes summary statistics for a list of tokenized biological sequences,
-including corpus-level metrics, token frequencies, token lengths, and
-basic biological features (e.g., GC-like tokens).
+This function computes summary statistics for a list of tokenized biological
+sequences, including corpus-level metrics, token frequencies, token lengths,
+and basic biological features (e.g., GC-like tokens). These analysis metrics
+are further used for downstream analysis and visualization by the pipeline.
 }
 \examples{
 \dontrun{
@@ -46,7 +47,17 @@ basic biological features (e.g., GC-like tokens).
    aa_summary <- summarize_tokens(tokens = data$aa_tokens$tokens)
 }
 
+}
+\references{
+{
+R Core Team (2025). \emph{R: A Language and Environment for Statistical
+Computing}. R Foundation for Statistical Computing, Vienna, Austria.
+\url{https://www.R-project.org/}.
 
+Dotan E, Jaschek G, Pupko T, Belinkov Y (2024). Effect of tokenization on
+transformers for biological sequences. Bioinformatics, 40(4): btae196.
+doi:10.1093/bioinformatics/btae196. PMCID: PMC11055402.
+}
 }
 \concept{summary}
 \keyword{summary}

@@ -40,6 +40,20 @@ in the tokenized sequences, ranked from most to least frequent.
 }
 
 }
+\references{
+{
+Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York. ISBN 978-3-319-24277-4,
+https://ggplot2.tidyverse.org.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A 
+Grammar of Data Manipulation_. doi:10.32614/CRAN.package.dplyr 
+<https://doi.org/10.32614/CRAN.package.dplyr>, R package version 1.1.4,
+<https://CRAN.R-project.org/package=dplyr>.
+}\if{html}{\out{</div>}}
+
+}
+}
 \seealso{
 Other visualization: 
 \code{\link{plot_token_frequency_distribution}()},

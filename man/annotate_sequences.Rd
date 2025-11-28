@@ -15,9 +15,10 @@ The same \code{bioBPE_preprocessed} object with the \code{seqs} updated with
 annotations and \code{annot_steps} recording the steps applied.
 }
 \description{
-Adds biological annotations to preprocessed sequences, preparing them for
-downstream byte-pair encoding (BPE) tokenization and analysis.
-Annotation steps depend on the sequence type (DNA, RNA, or amino acids).
+This function adds biological annotations to preprocessed sequences,
+preparing them for downstream byte-pair encoding (BPE) tokenization and
+analysis. Annotation steps depend on the sequence type (DNA, RNA, or amino
+acids).
 }
 \details{
 The annotation step may include annotating sequence length, GC
@@ -50,6 +51,14 @@ delegated to internal helper functions:
    aa_annot <- annotate_sequences(bioBPE_seqs = data$aa_preproc)
 }
 
+}
+\references{
+{
+Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S, Fukunaga
+T, Hamada M (2021). Representation learning applications in biological
+sequence analysis. Computational and Structural Biotechnology Journal,
+19: 3198-3208. doi:10.1016/j.csbj.2021.05.039.
+}
 }
 \seealso{
 Other annotation: 

@@ -4,11 +4,31 @@
 \alias{.BioTokenizeR_compute_bio_score}
 \title{Compute Biological Score for BPE Tokenization}
 \usage{
-.BioTokenizeR_compute_bio_score(bioBPE_seqs)
+.BioTokenizeR_compute_bio_score(bioBPE_seqs, bio_weights = NULL)
 }
 \arguments{
 \item{bioBPE_seqs}{A \code{bioBPE_preprocessed} object containing preprocessed
 DNA, RNA, or AA sequences.}
+
+\item{bio_weights}{A named list of numerical values containing the following:
+\describe{
+\item{\code{length}}{A numerical value indicating the weight of the length
+annotation when computing each sequence's biological score.},
+\item{\code{gc_content}}{A numerical value indicating the weight of the
+GC-content annotation when computing each sequence's biological score.},
+\item{\code{hydrophobic_fraction}}{A numerical value indicating the weight
+of the hydrophobic fraction annotation when computing each sequence's
+biological score.},
+\item{\code{charged_fraction}}{A numerical value indicating the weight of
+the charged fraction annotation when computing each sequence's
+biological score.},
+\item{\code{polar_fraction}}{A numerical value indicating the weight of the
+polar fraction annotation when computing each sequence's biological
+score.},
+\item{\code{composition_entropy}}{A numerical value indicating the weight
+of the composition entropy annotation when computing each sequence's
+biological score.}
+}}
 }
 \value{
 A numeric vector of biology scores per sequence sorted in the same
@@ -16,10 +36,31 @@ order as \code{bioBPE_seqs}.
 }
 \description{
 Computes a biological score from the provided annotations as input into
-biology-aware BPE tokenization.
+biology-aware BPE tokenization. This biological score is used to incorporate
+awareness of biological annotations into the NLP-style tokenization and
+vocabulary learning phase of the pipeline, utilizing user-provided (or
+default) weightings of the implemented annotations to fine-tune performance.
+}
+\references{
+{
+Dotan E, Jaschek G, Pupko T, Belinkov Y (2024). Effect of tokenization on
+transformers for biological sequences. Bioinformatics, 40(4): btae196.
+doi:10.1093/bioinformatics/btae196. PMCID: PMC11055402.
+
+Pagès H, Lawrence M, Aboyoun P (2025). S4Vectors:
+Foundation of vector-like and list-like containers in Bioconductor.
+doi:10.18129/B9.bioc.S4Vectors https://doi.org/10.18129/B9.bioc.S4Vectors,
+R package version 0.48.0, https://bioconductor.org/packages/S4Vectors.
+
+Wickham H, Pedersen T, Seidel D (2025). \emph{scales: Scale Functions for
+Visualization}. doi:10.32614/CRAN.package.scales
+\url{https://doi.org/10.32614/CRAN.package.scales}, R package version 1.4.0,
+\url{https://CRAN.R-project.org/package=scales}.
+}
 }
 \seealso{
 Other preprocessing: 
+\code{\link{.BioTokenizeR_normalize}()},
 \code{\link{.BioTokenizeR_preprocess_AA}()},
 \code{\link{.BioTokenizeR_preprocess_DNA}()},
 \code{\link{.BioTokenizeR_preprocess_RNA}()},

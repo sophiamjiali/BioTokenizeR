@@ -83,4 +83,17 @@ documentation, testthat, and various tests.
 }
 
 }
+\references{
+{
+Ponty Y, Termier M, Denise A (2006). GenRGenS: software for generating
+random genomic sequences and structures. Bioinformatics, 22(12): 1534-
+1535. doi:10.1093/bioinformatics/btl113.
+}
+}
+\seealso{
+Other utilities: 
+\code{\link{generate_dummy_data}()},
+\code{\link{generate_sequences}()}
+}
+\concept{utilities}
 \keyword{internal}
