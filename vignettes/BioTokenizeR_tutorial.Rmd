@@ -211,7 +211,7 @@ frequency reflects importance or commonness, where in biological
 sequences, this may correspond to common motifs, codons, or regulatory
 sequences depending on the vocabulary size. In our results, we observe
 dinucleotide patterns dominating the most frequent tokens of the corpus,
-where `CG` and `GC` may correspond to CpG motifs, and `TT` and `AT` may
+where `GC` may correspond to CpG motifs, and `TT` and `AT` may
 correspond to AT-rich motifs in promoter regions, structural features,
 or high-flexibility regions.
 
