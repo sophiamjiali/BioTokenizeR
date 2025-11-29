@@ -80,6 +80,17 @@
 #' @export
 visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
+  # Verify that the statistics provided are valid
+  if (!inherits(statistics, "bioBPE_summary")) {
+    stop("`statistics` must be a list.")
+  }
+  
+  # Verify that the top number of tokens is valid
+  if (top_n <= 0) {
+    stop("`top_n` must be greater than zero.")
+  }
+  
+  
   # Visualize and save all plots
   plots <- list(
     frequency_distribution = (
@@ -151,6 +162,11 @@ visualize_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #' @importFrom tibble tibble
 #' @export
 plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
+  
+  # Verify that the statistics provided are valid
+  if (!inherits(statistics, "bioBPE_summary")) {
+    stop("`statistics` must be a list.")
+  }
   
   # Verify that the statistics provided includes token frequencies
   token_freq <- statistics$token_summary$frequency
@@ -250,6 +266,16 @@ plot_token_frequency_distribution <- function(statistics, output_dir = NULL) {
 #' @export
 plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
   
+  # Verify that the statistics provided are valid
+  if (!inherits(statistics, "bioBPE_summary")) {
+    stop("`statistics` must be a list.")
+  }
+  
+  # Verify that the top number of tokens is valid
+  if (top_n <= 0) {
+    stop("`top_n` must be greater than zero.")
+  }
+  
   # Verify that the statistics provided include token summaries
   token_summary <- statistics$token_summary
   if (is.null(token_summary)) stop("'statistics' must include token summary.")
@@ -347,6 +373,11 @@ plot_top_tokens <- function(statistics, top_n = 30, output_dir = NULL) {
 #' @importFrom dplyr arrange desc mutate
 #' @export
 plot_cumulative_coverage <- function(statistics, output_dir = NULL) {
+  
+  # Verify that the statistics provided are valid
+  if (!inherits(statistics, "bioBPE_summary")) {
+    stop("`statistics` must be a list.")
+  }
   
   # Verify that the statistics provided include token summaries
   token_summary <- statistics$token_summary
