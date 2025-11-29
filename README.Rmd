@@ -88,6 +88,8 @@ User-accessible functions include:
 
 ![](./inst/extdata/BioTokenizeR_pipeline.png)
 
+Package Workflow Overview, created using <https://BioRender.com/>.
+
 ## Contributions
 
 The author of BioTokenizeR is Sophia Li. BioTokenizeR contains eight
@@ -135,78 +137,84 @@ documentation was formatted correctly.
 
 ## References
 
--   Chang W, Cheng J, Allaire J, Sievert C, Schloerke B, Xie Y, Allen J,
-    McPherson J, Dipert A, Borges B (2025). *shiny: Web Application
-    Framework for R*. <doi:10.32614/CRAN.package.shiny>
-    <https://doi.org/10.32614/CRAN.package.shiny>, R package version
-    1.11.1, <https://CRAN.R-project.org/package=shiny>.
+**Scientific Literature**
 
--   Dotan E, Jaschek G, Pupko T, Belinkov Y (2024). Effect of
-    tokenization on transformers for biological sequences.
-    Bioinformatics, 40(4): btae196.
-    <doi:10.1093/bioinformatics/btae196>. PMCID: PMC11055402.
+Dotan E, Jaschek G, Pupko T, Belinkov Y (2024). Effect of tokenization
+on transformers for biological sequences. Bioinformatics, 40(4):
+btae196. <doi:10.1093/bioinformatics/btae196>. PMCID: PMC11055402.
 
--   Grolemund, G. (2015). Learn Shiny - Video Tutorials.
-    <https://shiny.rstudio.com/tutorial/>.
+Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S,
+Fukunaga T, Hamada M (2021). Representation learning applications in
+biological sequence analysis. Computational and Structural Biotechnology
+Journal, 19: 3198-3208. <doi:10.1016/j.csbj.2021.05.039>.
 
--   Iuchi H, Matsutani T, Yamada K, Iwano N, SumiS, Hosoda S, Zhao S,
-    Fukunaga T, Hamada M (2021). Representation learning applications in
-    biological sequence analysis. Computational and Structural
-    Biotechnology Journal, 19: 3198-3208.
-    <doi:10.1016/j.csbj.2021.05.039>.
+Medvedev A, Viswanathan K, Kanithi P (2025). BioToken and BioFM -
+Biologically‑Informed Tokenization Framework. bioRxiv.
+<https://doi.org/10.1101/2025.03.27.645711>
 
--   Medvedev A, Viswanathan K, Kanithi P (2025).BioToken and BioFM -
-    Biologically‑Informed Tokenization Framework. bioRxiv.
-    <https://doi.org/10.1101/2025.03.27.645711>
+Ponty Y, Termier M, Denise A (2006). GenRGenS: software for generating
+random genomic sequences and structures. Bioinformatics, 22(12):
+1534-1535. <doi:10.1093/bioinformatics/btl113>.
 
--   Müller K, Wickham H (2025). tibble: Simple Data Frames.
-    <doi:10.32614/CRAN.package.tibble>
-    <https://doi.org/10.32614/CRAN.package.tibble>, R package version
-    3.3.0, <https://CRAN.R-project.org/package=tibble>.
+Sennrich R, Haddow B, Birch A (2016). Neural Machine Translation of Rare
+Words with Subword Units. Proceedings of the 54th Annual Meeting of the
+Association for Computational Linguistics. Association for Computational
+Linguistics, 1715–1725. <https://aclanthology.org/P16-1162>.
 
--   Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). *Biostrings:
-    Efficient manipulation of biological strings*.
-    <doi:10.18129/B9.bioc.Biostrings>
-    <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version
-    2.76.0, <https://bioconductor.org/packages/Biostrings>.
+**R Packages**
 
--   Pagès H, Lawrence M, Aboyoun P (2025). *S4Vectors: Foundation of
-    vector-like and list-like containers in Bioconductor*.
-    <doi:10.18129/B9.bioc.S4Vectors>
-    <https://doi.org/10.18129/B9.bioc.S4Vectors>, R package version
-    0.48.0, <https://bioconductor.org/packages/S4Vectors>.
+Allaire, JJ, Xie, Y, Dervieux, C, McPherson, J, Luraschi, J, Ushey, K,
+Atkins, A, Wickham, H. Cheng, J, Chang, W, Iannone, R (2025). rmarkdown:
+Dynamic Documents for R (Version 2.30) [Computer software].
+<https://github.com/rstudio/rmarkdown>
 
--   Ponty Y, Termier M, Denise A (2006). GenRGenS: software for
-    generating random genomic sequences and structures. Bioinformatics,
-    22(12): 1534-1535. <doi:10.1093/bioinformatics/btl113>.
+Chang W, Cheng J, Allaire J, Sievert C, Schloerke B, Xie Y, Allen J,
+McPherson J, Dipert A, Borges B (2025). *shiny: Web Application
+Framework for R*. <doi:10.32614/CRAN.package.shiny>
+<https://doi.org/10.32614/CRAN.package.shiny>, R package version 1.11.1,
+<https://CRAN.R-project.org/package=shiny>.
 
--   R Core Team (2024). *R: A Language and Environment for Statistical
-    Computing*. R Foundation for Statistical Computing, Vienna, Austria.
-    <https://www.R-project.org/>.
+Müller K, Wickham H (2025). tibble: Simple Data Frames.
+<doi:10.32614/CRAN.package.tibble>
+<https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0,
+<https://CRAN.R-project.org/package=tibble>.
 
--   R Core Team (2025). *R: A Language and Environment for Statistical
-    Computing*. R Foundation for Statistical Computing, Vienna, Austria.
-    <https://www.R-project.org/>.
+Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). *Biostrings: Efficient
+manipulation of biological strings*. <doi:10.18129/B9.bioc.Biostrings>
+<https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.76.0,
+<https://bioconductor.org/packages/Biostrings>.
 
--   Sennrich R, Haddow B, Birch A (2016). Neural Machine Translation of
-    Rare Words with Subword Units. Proceedings of the 54th Annual
-    Meeting of the Association for Computational Linguistics.
-    Association for Computational Linguistics, 1715–1725.
-    <https://aclanthology.org/P16-1162>.
+Pagès H, Lawrence M, Aboyoun P (2025). *S4Vectors: Foundation of
+vector-like and list-like containers in Bioconductor*.
+<doi:10.18129/B9.bioc.S4Vectors>
+<https://doi.org/10.18129/B9.bioc.S4Vectors>, R package version 0.48.0,
+<https://bioconductor.org/packages/S4Vectors>.
 
--   Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.
-    Springer-Verlag New York. ISBN 978-3-319-24277-4,
-    <https://ggplot2.tidyverse.org>.
+R Core Team (2025). *R: A Language and Environment for Statistical
+Computing*. R Foundation for Statistical Computing, Vienna, Austria.
+<https://www.R-project.org/>.
 
--   Wickham H, Pedersen T, Seidel D (2025). *scales: Scale Functions for
-    Visualization*. <doi:10.32614/CRAN.package.scales>
-    <https://doi.org/10.32614/CRAN.package.scales>, R package version
-    1.4.0, <https://CRAN.R-project.org/package=scales>.
+Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis.
+Springer-Verlag New York. ISBN 978-3-319-24277-4,
+<https://ggplot2.tidyverse.org>.
 
--   Wickham H, François R, Henry L, Müller K, Vaughan D (2023). dplyr: A
-    Grammar of Data Manipulation. <doi:10.32614/CRAN.package.dplyr>
-    <https://doi.org/10.32614/CRAN.package.dplyr>, R package version
-    1.1.4, <https://CRAN.R-project.org/package=dplyr>.
+Wickham H, Pedersen T, Seidel D (2025). *scales: Scale Functions for
+Visualization*. <doi:10.32614/CRAN.package.scales>
+<https://doi.org/10.32614/CRAN.package.scales>, R package version 1.4.0,
+<https://CRAN.R-project.org/package=scales>.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). dplyr: A
+Grammar of Data Manipulation. <doi:10.32614/CRAN.package.dplyr>
+<https://doi.org/10.32614/CRAN.package.dplyr>, R package version 1.1.4,
+<https://CRAN.R-project.org/package=dplyr>.
+
+**Other Resources**
+
+BioRender (2025). Image created by Li, S. Retrieved October 25, 2025,
+from <https://app.biorender.com/>.
+
+Grolemund, G. (2015). Learn Shiny - Video Tutorials.
+<https://shiny.rstudio.com/tutorial/>.
 
 ## Acknowledgements
 
